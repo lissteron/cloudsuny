@@ -9,10 +9,12 @@ Response:
 {
     "data": [
         {
+            "id": "uuid",
             "username": "name",
             "avatar": "http://image_url",
             "badges": [
               {
+                "id": "uuid",
                 "type": "cloud",
                 "date": "date time ISO 8601",
                 "coords": {
@@ -21,6 +23,7 @@ Response:
                 }
               },
               {
+                "id": "uuid",
                 "type": "sun",
                 "date": "date time ISO 8601",
                 "coords": {
@@ -40,7 +43,6 @@ Response:
 }
 ```
 
-
 // auth from http baseauth username
 
 
@@ -56,7 +58,21 @@ Request:
 
 ```
 
+Response:
+
+```json
+{
+    "id":   "uuid",
+    "username": "some name",
+    "avatar": "img.jpg"
+}
+
+```
+
 /api/v1/badge/add 
+
+Request:
+
 ```json
 {
   "username": "name",
@@ -67,7 +83,35 @@ Request:
     "y": 0.0,
   }
 }
+```
 
+Response:
+```json
+{
+  "id": "uuid",
+  "username": "name",
+  "type": "cloud|sun", // enum
+  "date": "date time ISO 8601",
+  "coords": {
+    "x": 0.0,
+    "y": 0.0,
+  }
+}
+```
+
+
+/api/v1/badge/update 
+
+Request:
+
+```json
+{
+  "id": "uuid",
+  "coords": {
+    "x": 0.0,
+    "y": 0.0,
+  }
+}
 ```
 
 /api/v1/image/upload
