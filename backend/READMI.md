@@ -1,6 +1,6 @@
 # API
 
-GET /api/v1/view
+#### GET /api/v1/view
 
 Request: none
 
@@ -46,7 +46,7 @@ Response:
 // auth from http baseauth username
 
 
-/api/v1/user/create
+#### POST /api/v1/user/create
 
 Request:
 
@@ -69,7 +69,7 @@ Response:
 
 ```
 
-/api/v1/badge/add 
+#### POST /api/v1/badge/add 
 
 Request:
 
@@ -100,7 +100,7 @@ Response:
 ```
 
 
-/api/v1/badge/update 
+#### POST /api/v1/badge/update 
 
 Request:
 
@@ -114,7 +114,7 @@ Request:
 }
 ```
 
-/api/v1/image/upload
+#### POST /api/v1/image/upload
 
 Request:
 
