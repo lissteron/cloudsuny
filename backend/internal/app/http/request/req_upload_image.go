@@ -1,13 +1,14 @@
 package request
 
 import (
-	"image"
-	_ "image/gif"  // gif package
-	_ "image/jpeg" // jpeg package
-	_ "image/png"  // png package
 	"io"
+	"io/ioutil"
 	"net/http"
+	"strings"
 
+	validation "github.com/gadavy/ozzo-validation/v4"
+
+	"github.com/lissteron/cloudsuny/internal/app/codes"
 	"github.com/lissteron/cloudsuny/internal/app/domain"
 )
 
@@ -29,14 +30,38 @@ func ReadUploadImageRequest(r *http.Request) (req *UploadImageRequest, err error
 		return nil, err
 	}
 
-	req.Image.Image, req.Format, err = image.Decode(io.LimitReader(formData, maxImageSize))
+	req.Bytes, err = ioutil.ReadAll(io.LimitReader(formData, maxImageSize))
 	if err != nil {
+		return nil, err
+	}
+
+	req.Format = http.DetectContentType(req.Bytes)
+
+	if err := req.Validate(); err != nil {
 		return nil, err
 	}
 
 	return req, nil
 }
 
+func (r *UploadImageRequest) Validate() error {
+	return validation.ValidateStruct(r,
+		validation.Field(&r.Format, r.formatRules()...),
+	)
+}
+
 func (r *UploadImageRequest) ToInput() *domain.Image {
+	r.Format = strings.Split(r.Format, "/")[1]
+
 	return &r.Image
+}
+
+func (r *UploadImageRequest) formatRules() []validation.Rule {
+	return []validation.Rule{
+		validation.In(
+			"image/gif",
+			"image/png",
+			"image/jpeg",
+		).ErrorCode(codes.ValidImageFormatIn.String()),
+	}
 }

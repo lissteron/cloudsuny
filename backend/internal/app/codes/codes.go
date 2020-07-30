@@ -15,7 +15,6 @@ const (
 	DatabaseError = system + iota
 	SystemError
 	InvalidJSONError
-	EncodeImgFailed
 )
 
 const (
@@ -39,6 +38,7 @@ const (
 	ValidBadgeUserIDRequired
 	ValidBadgeTypeRequired
 	ValidBadgeTypeIn
+	ValidImageFormatIn
 )
 
 func ToHTTP(code int) int {

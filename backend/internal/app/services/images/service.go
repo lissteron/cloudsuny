@@ -3,9 +3,6 @@ package images
 import (
 	"errors"
 	"fmt"
-	"image/gif"
-	"image/jpeg"
-	"image/png"
 	"math/rand"
 	"os"
 	"path"
@@ -64,20 +61,9 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 
 	defer file.Close()
 
-	switch img.Format {
-	case "jpeg":
-		err = jpeg.Encode(file, img.Image, nil)
-	case "png":
-		err = png.Encode(file, img.Image)
-	case "gif":
-		err = gif.Encode(file, img.Image, nil)
-	default:
-		return nil, simplerr.WrapWithCode(ErrUnknownImgFormat, codes.UnknownImgFormat, "unknown image format")
-	}
-
-	if err != nil {
+	if _, err := file.Write(img.Bytes); err != nil {
 		s.logger.Errorf("encode image failed: %v", err)
-		return nil, simplerr.WrapWithCode(err, codes.EncodeImgFailed, "encode image failed")
+		return nil, simplerr.WrapWithCode(err, codes.SystemError, "write image failed")
 	}
 
 	return img, nil

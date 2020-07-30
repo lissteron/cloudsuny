@@ -175,10 +175,10 @@ Response:
 |UserAlreadyExists        |2001  |
 |BadgeNotFound            |2002  |
 |UnknownImgFormat         |2003  |
-|EncodeImgFailed          |2004  |
 |ValidUserUsernameRequired|200000|
 |ValidUserAvatarRequired  |200001|
 |ValidBadgeIDRequired     |200002|
 |ValidBadgeUserIDRequired |200003|
 |ValidBadgeTypeRequired   |200004|
 |ValidBadgeTypeIn         |200005|
+|ValidImageFormatIn       |200006|

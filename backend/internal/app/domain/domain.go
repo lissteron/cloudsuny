@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"image"
 	"time"
 )
 
@@ -31,7 +30,7 @@ type Point struct {
 }
 
 type Image struct {
-	Image  image.Image `json:"-"`
-	Format string      `json:"-"`
-	Name   string      `json:"name"`
+	Bytes  []byte `json:"-"`
+	Format string `json:"-"`
+	Name   string `json:"name"`
 }
