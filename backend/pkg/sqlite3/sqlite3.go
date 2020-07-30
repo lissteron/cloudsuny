@@ -33,7 +33,7 @@ func (c *Client) initDB() error {
 	query := `
 	CREATE TABLE IF NOT EXISTS "user" (
 		id UUID NOT NULL PRIMARY KEY,
-		username TEXT NULL,
+		username TEXT NOT NULL,
 		avatar TEXT NOT NULL DEFAULT '',
 		created_at TIMESTAMP NOT NULL
 	);
