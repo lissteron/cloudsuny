@@ -1,0 +1,21 @@
+version: '3'
+services:
+  cloudsuny-backend:
+    image: golang:1.14
+    volumes:
+      - ./backend/:/app
+      - ./data/db/:/db/
+    working_dir: /app/cmd/cloudsuny/
+    command: go run main.go
+    environment:
+      - SERVER_HTTP_PORT=8080
+      - SERVER_CERT=
+      - SERVER_KEY=
+
+      - LOGGER_LEVEL=debug
+      - LOGGER_NAMESPACE=dev
+      - LOGGER_COLLECTOR_URL=
+
+      - DB_PATH=/db/database.db
+    ports:
+      - 8080:8080

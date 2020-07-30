@@ -28,3 +28,7 @@ type Point struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
 }
+
+type Image struct {
+	Name string `json:"name"`
+}

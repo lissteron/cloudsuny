@@ -14,6 +14,7 @@ import (
 	"github.com/lissteron/cloudsuny/config"
 	"github.com/lissteron/cloudsuny/internal/app/http/handlers"
 	"github.com/lissteron/cloudsuny/internal/app/repositories"
+	"github.com/lissteron/cloudsuny/internal/app/services/images"
 	"github.com/lissteron/cloudsuny/internal/app/usecases"
 	"github.com/lissteron/cloudsuny/pkg/server"
 	"github.com/lissteron/cloudsuny/pkg/sqlite3"
@@ -44,6 +45,9 @@ func main() {
 	// Init repository
 	repository := repositories.NewRepository(sqliteDB.DB(), logger)
 
+	// Init services
+	imageService := images.NewService("/images/...")
+
 	// Init usecases
 	var (
 		userCreate = usecases.NewCreateUser(repository, logger)
@@ -55,8 +59,9 @@ func main() {
 
 	// Init handlers
 	var (
-		userHandlers = handlers.NewUserHandlers(userCreate, userList, logger)
-		badgeHandler = handlers.NewBadgeHandlers(badgeCreate, badgeUpdate, logger)
+		userHandlers  = handlers.NewUserHandlers(userCreate, userList, logger)
+		badgeHandlers = handlers.NewBadgeHandlers(badgeCreate, badgeUpdate, logger)
+		imageHandlers = handlers.NewImagesHandlers(imageService, logger)
 	)
 
 	srv := server.NewHTTP(config.ServerConfig())
@@ -65,8 +70,9 @@ func main() {
 	r1 := r.PathPrefix("/api/v1/").Subrouter()
 	r1.HandleFunc("/user/create", userHandlers.CreateHandler)
 	r1.HandleFunc("/view", userHandlers.ViewHandler)
-	r1.HandleFunc("/badge/create", badgeHandler.CreateHandler)
-	r1.HandleFunc("/badge/update", badgeHandler.UpdateHandler)
+	r1.HandleFunc("/badge/create", badgeHandlers.CreateHandler)
+	r1.HandleFunc("/badge/update", badgeHandlers.UpdateHandler)
+	r1.HandleFunc("/image/upload", imageHandlers.UploadPhotoHandler)
 
 	errGroup, ctx := errgroup.WithContext(context.Background())
 
