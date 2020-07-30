@@ -9,7 +9,8 @@ import (
 )
 
 type ImagesService interface {
-	UploadImage(data []byte) (*domain.Image, error)
+	UploadImage(img *domain.Image) (*domain.Image, error)
+	GetStoragePath() string
 }
 
 type ImagesHandlers struct {
@@ -45,4 +46,8 @@ func (h *ImagesHandlers) UploadPhotoHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	resp.SetData(result)
+}
+
+func (h *ImagesHandlers) FileServer() http.Handler {
+	return http.FileServer(http.Dir(h.service.GetStoragePath()))
 }

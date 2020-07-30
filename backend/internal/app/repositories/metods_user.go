@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -31,7 +32,7 @@ func (r *Repository) FindUserByID(ctx context.Context, userID string) (*domain.U
 	var model = &models.User{}
 
 	if err := r.database().GetContext(ctx, model, query, userID); err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
 		}
 
@@ -47,7 +48,7 @@ func (r *Repository) FindUserByUsername(ctx context.Context, username string) (*
 	var model = &models.User{}
 
 	if err := r.database().GetContext(ctx, model, query, username); err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
 		}
 

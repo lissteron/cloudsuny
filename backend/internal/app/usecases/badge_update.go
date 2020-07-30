@@ -47,7 +47,9 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 		return nil, ErrBadgeNotFound
 	}
 
-	badge, err = storage.UpdateBadge(ctx, badge)
+	exists.Point = badge.Point
+
+	badge, err = storage.UpdateBadge(ctx, exists)
 	if err != nil {
 		c.logger.Errorf("update badge failed: %v", err)
 		return nil, err

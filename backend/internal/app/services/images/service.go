@@ -1,6 +1,11 @@
 package images
 
 import (
+	"errors"
+	"fmt"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
 	"math/rand"
 	"os"
 	"path"
@@ -11,7 +16,12 @@ import (
 )
 
 const (
-	maxRandInt = 31
+	imageFolder = "images"
+	maxRandInt  = 31
+)
+
+var (
+	ErrUnknownFormat = errors.New("unknown format")
 )
 
 type Logger interface {
@@ -26,35 +36,52 @@ type Logger interface {
 }
 
 type Service struct {
-	imagesPath string
-	rnd        rand.Source
-	logger     Logger
+	dir    string
+	logger Logger
+	rnd    rand.Source
 }
 
-func NewService(path string) *Service {
+func NewService(dir string, logger Logger) *Service {
 	return &Service{
-		imagesPath: path,
-		rnd:        rand.New(rand.NewSource(time.Now().UnixNano())),
+		dir:    dir,
+		logger: logger,
+		rnd:    rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 
-func (s *Service) UploadImage(data []byte) (*domain.Image, error) {
-	imageID := s.generateRandomID()
+func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
+	name := fmt.Sprintf("%s.%s", s.generateRandomID(), img.Format)
+	img.Name = path.Join(imageFolder, name)
 
-	file, err := os.Create(path.Join(s.imagesPath, imageID))
+	file, err := os.Create(path.Join(s.dir, name))
 	if err != nil {
+		s.logger.Errorf("open file failed: %v", err)
 		return nil, err
 	}
 
-	if _, err := file.Write(data); err != nil {
+	defer file.Close()
+
+	switch img.Format {
+	case "jpeg":
+		err = jpeg.Encode(file, img.Image, nil)
+	case "png":
+		err = png.Encode(file, img.Image)
+	case "gif":
+		err = gif.Encode(file, img.Image, nil)
+	default:
+		return nil, ErrUnknownFormat
+	}
+
+	if err != nil {
+		s.logger.Errorf("encode image failed: %v", err)
 		return nil, err
 	}
 
-	return nil, nil
+	return img, nil
 }
 
 func (s *Service) GetStoragePath() string {
-	return s.imagesPath
+	return s.dir
 }
 
 func (s *Service) generateRandomID() string {

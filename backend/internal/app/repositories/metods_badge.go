@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -31,7 +32,7 @@ func (r *Repository) FindBadgeByID(ctx context.Context, badgeID string) (*domain
 	var model = &models.Badge{}
 
 	if err := r.database().GetContext(ctx, model, query, badgeID); err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
 		}
 

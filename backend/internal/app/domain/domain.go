@@ -1,14 +1,15 @@
 package domain
 
 import (
+	"image"
 	"time"
 )
 
 type User struct {
-	ID       string   `json:"id"`
-	Username string   `json:"username"`
-	Avatar   string   `json:"avatar"`
-	Badges   []*Badge `json:"badges"`
+	ID       string   `json:"id,omitempty"`
+	Username string   `json:"username,omitempty"`
+	Avatar   string   `json:"avatar,omitempty"`
+	Badges   []*Badge `json:"badges,omitempty"`
 }
 
 const (
@@ -17,11 +18,11 @@ const (
 )
 
 type Badge struct {
-	ID        string    `json:"id"`
-	UserID    string    `json:"user_id"`
-	Type      string    `json:"type"`
-	Point     Point     `json:"point"`
-	CreatedAt time.Time `json:"created_at"`
+	ID        string    `json:"id,omitempty"`
+	UserID    string    `json:"user_id,omitempty"`
+	Type      string    `json:"type,omitempty"`
+	Point     Point     `json:"point,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
 type Point struct {
@@ -30,5 +31,7 @@ type Point struct {
 }
 
 type Image struct {
-	Name string `json:"name"`
+	Image  image.Image `json:"-"`
+	Format string      `json:"-"`
+	Name   string      `json:"name"`
 }

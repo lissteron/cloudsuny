@@ -1,9 +1,14 @@
 package request
 
 import (
+	"image"
+	_ "image/gif"  // gif package
+	_ "image/jpeg" // jpeg package
+	_ "image/png"  // png package
 	"io"
-	"io/ioutil"
 	"net/http"
+
+	"github.com/lissteron/cloudsuny/internal/app/domain"
 )
 
 const (
@@ -13,18 +18,18 @@ const (
 )
 
 type UploadImageRequest struct {
-	Data []byte
+	domain.Image
 }
 
 func ReadUploadImageRequest(r *http.Request) (req *UploadImageRequest, err error) {
 	req = &UploadImageRequest{}
 
-	image, _, err := r.FormFile(formImageData)
+	formData, _, err := r.FormFile(formImageData)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Data, err = ioutil.ReadAll(io.LimitReader(image, maxImageSize))
+	req.Image.Image, req.Format, err = image.Decode(io.LimitReader(formData, maxImageSize))
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +37,6 @@ func ReadUploadImageRequest(r *http.Request) (req *UploadImageRequest, err error
 	return req, nil
 }
 
-func (r *UploadImageRequest) ToInput() []byte {
-	return r.Data
+func (r *UploadImageRequest) ToInput() *domain.Image {
+	return &r.Image
 }

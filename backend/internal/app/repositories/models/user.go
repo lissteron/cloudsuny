@@ -15,9 +15,9 @@ type User struct {
 
 func UserFromDomain(user *domain.User) *User {
 	return &User{
-		ID:        user.ID,
-		Username:  user.Username,
-		Avatar:    user.Avatar,
+		ID:       user.ID,
+		Username: user.Username,
+		Avatar:   user.Avatar,
 	}
 }
 

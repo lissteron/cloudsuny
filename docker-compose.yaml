@@ -5,6 +5,7 @@ services:
     volumes:
       - ./backend/:/app
       - ./data/db/:/db/
+      - ./data/images/:/images/
     working_dir: /app/cmd/cloudsuny/
     command: go run main.go
     environment:
@@ -16,6 +17,7 @@ services:
       - LOGGER_NAMESPACE=dev
       - LOGGER_COLLECTOR_URL=
 
-      - DB_PATH=/db/database.db
+      - PATH_DB=/db/database.db
+      - PATH_IMG=/images
     ports:
       - 8080:8080

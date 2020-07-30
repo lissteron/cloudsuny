@@ -21,10 +21,10 @@ func Init() {
 
 func LoggerConfig() *zap.Config {
 	return &zap.Config{
-		Level:         viper.GetString("logger.level"),
-		CollectorURL:  viper.GetString("logger.collector.url"),
-		Namespace:     viper.GetString("logger.namespace"),
-		Source:        "github.com/lissteron/cloudsuny",
+		Level:        viper.GetString("logger.level"),
+		CollectorURL: viper.GetString("logger.collector.url"),
+		Namespace:    viper.GetString("logger.namespace"),
+		Source:       "github.com/lissteron/cloudsuny",
 	}
 }
 

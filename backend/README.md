@@ -7,37 +7,39 @@ Request: none
 Response:
 ```json
 {
+    "errors": null,
     "data": [
         {
-            "id": "uuid",
-            "username": "name",
-            "avatar": "http://image_url",
+            "id": "77e4d43d-5be3-4b7b-9277-809cf18824d3",
+            "username": "username-1",
+            "avatar": "avatar-1",
             "badges": [
-              {
-                "id": "uuid",
-                "type": "cloud",
-                "created_at": "date time ISO 8601",
-                "point": {
-                  "x": 0.0,
-                  "y": 0.0
+                {
+                    "id": "783459e6-ea41-4882-86e9-eab51d0e9182",
+                    "user_id": "77e4d43d-5be3-4b7b-9277-809cf18824d3",
+                    "type": "cloud",
+                    "point": {
+                        "x": 0.55,
+                        "y": -100.99
+                    },
+                    "created_at": "2020-07-30T08:48:12.796654876Z"
                 }
-              },
-              {
-                "id": "uuid",
-                "type": "sun",
-                "created_at": "date time ISO 8601",
-                "point": {
-                  "x": 0.0,
-                  "y": 0.0
-                }
-              }
             ]
-        }
-    ],
-    "errors": [
+        },
         {
-            "code": "13313312",
-            "detail": "some error text"
+            "id": "89569f66-8be2-4f8c-884b-bbfb33198a7b",
+            "username": "username-2",
+            "avatar": "avatar-2"
+        },
+        {
+            "id": "a463d37f-5eb0-485a-a0df-12844616847a",
+            "username": "username-3",
+            "avatar": "images/1c9khj4qb2kvbh.png"
+        },
+        {
+            "id": "5a28730f-34ba-4871-887f-e18196bcd80e",
+            "username": "username-4",
+            "avatar": "images/1c9khj4qb2kvbh.png"
         }
     ]
 }
@@ -52,21 +54,34 @@ Request:
 
 ```json
 {
-    "username": "some name",
-    "avatar": "img.jpg"
+	"username": "username",
+	"avatar": "images/1c9khj4qb2kvbh.png"
 }
-
 ```
 
 Response:
 
 ```json
 {
-    "id":   "uuid",
-    "username": "some name",
-    "avatar": "img.jpg"
+    "errors": null,
+    "data": {
+        "id": "5a28730f-34ba-4871-887f-e18196bcd80e",
+        "username": "username-4",
+        "avatar": "images/1c9khj4qb2kvbh.png"
+    }
 }
-
+```
+Response with error:
+```json
+{
+    "errors": [
+        {
+            "code": "0",
+            "detail": "user already exists"
+        }
+    ],
+    "data": null
+}
 ```
 
 #### POST /api/v1/badge/create
@@ -75,26 +90,29 @@ Request:
 
 ```json
 {
-  "user_id": "uuid",
-  "type": "cloud|sun", // enum
-  "coords": {
-    "x": 0.0,
-    "y": 0.0
-  }
+    "user_id": "77e4d43d-5be3-4b7b-9277-809cf18824d3",
+    "type": "cloud",
+    "coords": {
+        "x": 0,
+        "y": 0
+    }
 }
 ```
 
 Response:
 ```json
 {
-  "id": "uuid",
-  "username": "name",
-  "type": "cloud|sun", // enum
-  "created_at": "date time ISO 8601",
-  "coords": {
-    "x": 0.0,
-    "y": 0.0
-  }
+    "errors": null,
+    "data": {
+        "id": "47f08476-4da3-4742-abe1-ef36ea10b95c",
+        "user_id": "77e4d43d-5be3-4b7b-9277-809cf18824d3",
+        "type": "cloud",
+        "point": {
+            "x": 0,
+            "y": 0
+        },
+        "created_at": "2020-07-30T15:43:12.507165526Z"
+    }
 }
 ```
 
@@ -105,11 +123,28 @@ Request:
 
 ```json
 {
-  "id": "uuid",
-  "coords": {
-    "x": 0.0,
-    "y": 0.0
-  }
+    "id": "47f08476-4da3-4742-abe1-ef36ea10b95c",
+    "point": {
+        "x": 0.55,
+        "y": -100.19
+    }
+}
+```
+
+Response:
+```json
+{
+    "errors": null,
+    "data": {
+        "id": "47f08476-4da3-4742-abe1-ef36ea10b95c",
+        "user_id": "77e4d43d-5be3-4b7b-9277-809cf18824d3",
+        "type": "cloud",
+        "point": {
+            "x": 0.55,
+            "y": -100.19
+        },
+        "created_at": "2020-07-30T15:43:12.507165526Z"
+    }
 }
 ```
 
@@ -117,11 +152,14 @@ Request:
 
 Request:
 
-binary data
+field data = binary data
 
 Response:
 ```json
 {
-    "data": "image/path.jpg"
+    "errors": null,
+    "data": {
+        "name": "images/1c9kiacgaj25ud.png"
+    }
 }
 ```

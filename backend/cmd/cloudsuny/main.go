@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -37,7 +38,7 @@ func main() {
 	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM)
 
 	// Init db
-	sqliteDB, err := sqlite3.NewClient(viper.GetString("db.path"))
+	sqliteDB, err := sqlite3.NewClient(viper.GetString("path.db"))
 	if err != nil {
 		logger.Fatalf("init db failed: %v", err)
 	}
@@ -46,7 +47,7 @@ func main() {
 	repository := repositories.NewRepository(sqliteDB.DB(), logger)
 
 	// Init services
-	imageService := images.NewService("/images/...")
+	imageService := images.NewService(viper.GetString("path.img"), logger)
 
 	// Init usecases
 	var (
@@ -73,6 +74,8 @@ func main() {
 	r1.HandleFunc("/badge/create", badgeHandlers.CreateHandler)
 	r1.HandleFunc("/badge/update", badgeHandlers.UpdateHandler)
 	r1.HandleFunc("/image/upload", imageHandlers.UploadPhotoHandler)
+
+	r.PathPrefix("/images/").Handler(http.StripPrefix("/images/", imageHandlers.FileServer()))
 
 	errGroup, ctx := errgroup.WithContext(context.Background())
 
