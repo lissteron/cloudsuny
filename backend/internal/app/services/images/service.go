@@ -24,7 +24,7 @@ const (
 )
 
 var (
-	ErrUnknownFormat = errors.New("unknown format")
+	ErrUnknownImgFormat = errors.New("unknown img format")
 )
 
 type Logger interface {
@@ -59,7 +59,7 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 	file, err := os.Create(path.Join(s.dir, name))
 	if err != nil {
 		s.logger.Errorf("open file failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.SystemError)
+		return nil, simplerr.WrapWithCode(err, codes.SystemError, "open file failed")
 	}
 
 	defer file.Close()
@@ -72,12 +72,12 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 	case "gif":
 		err = gif.Encode(file, img.Image, nil)
 	default:
-		return nil, simplerr.WithCode(ErrUnknownFormat, codes.UnknownImgFormat)
+		return nil, simplerr.WrapWithCode(ErrUnknownImgFormat, codes.UnknownImgFormat, "unknown image format")
 	}
 
 	if err != nil {
 		s.logger.Errorf("encode image failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.EncodeImgFailed)
+		return nil, simplerr.WrapWithCode(err, codes.EncodeImgFailed, "encode image failed")
 	}
 
 	return img, nil

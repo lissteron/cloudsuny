@@ -34,7 +34,7 @@ func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, e
 	storage, err := c.storage.WithTransaction(ctx)
 	if err != nil {
 		c.logger.Errorf("start tx failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "start tx failed")
 	}
 
 	defer storage.RollbackTransaction()
@@ -42,22 +42,22 @@ func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, e
 	exists, err := storage.FindUserByUsername(ctx, user.Username)
 	if err != nil {
 		c.logger.Errorf("find user failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "find user failed")
 	}
 
 	if exists != nil {
-		return nil, simplerr.WithCode(ErrUserAlreadyExists, codes.UserAlreadyExists)
+		return nil, simplerr.WrapWithCode(ErrUserAlreadyExists, codes.UserAlreadyExists, "user already exists")
 	}
 
 	user, err = storage.CreateUser(ctx, user)
 	if err != nil {
 		c.logger.Errorf("create user failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "create user failed")
 	}
 
 	if err := storage.CommitTransaction(); err != nil {
 		c.logger.Errorf("commit tx failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "commit tx failed")
 	}
 
 	return user, nil

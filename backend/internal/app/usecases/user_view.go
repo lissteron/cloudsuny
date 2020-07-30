@@ -29,7 +29,7 @@ func (l *ViewUser) Do(ctx context.Context) ([]*domain.User, error) {
 	users, err := l.storage.ListUsers(ctx)
 	if err != nil {
 		l.logger.Errorf("list users failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "list users failed")
 	}
 
 	index := make(map[string]*domain.User, len(users))
@@ -41,7 +41,7 @@ func (l *ViewUser) Do(ctx context.Context) ([]*domain.User, error) {
 	badges, err := l.storage.ListBadges(ctx)
 	if err != nil {
 		l.logger.Errorf("list badges failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "list badges failed")
 	}
 
 	for _, badge := range badges {

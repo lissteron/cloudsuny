@@ -34,7 +34,7 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	storage, err := c.storage.WithTransaction(ctx)
 	if err != nil {
 		c.logger.Errorf("start tx failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "start tx failed")
 	}
 
 	defer storage.RollbackTransaction()
@@ -42,12 +42,12 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	exists, err := storage.FindBadgeByID(ctx, badge.ID)
 	if err != nil {
 		c.logger.Errorf("find badge failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "find badge failed")
 	}
 
 	if exists == nil {
 		c.logger.Errorf("badge with id = %s not found", badge.ID)
-		return nil, simplerr.WithCode(ErrBadgeNotFound, codes.BadgeNotFound)
+		return nil, simplerr.WrapWithCode(ErrBadgeNotFound, codes.BadgeNotFound, "badge not found")
 	}
 
 	exists.Point = badge.Point
@@ -55,12 +55,12 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	badge, err = storage.UpdateBadge(ctx, exists)
 	if err != nil {
 		c.logger.Errorf("update badge failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "update badge failed")
 	}
 
 	if err := storage.CommitTransaction(); err != nil {
 		c.logger.Errorf("commit tx failed: %v", err)
-		return nil, simplerr.WithCode(err, codes.DatabaseError)
+		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "commit tx failed")
 	}
 
 	return badge, nil
