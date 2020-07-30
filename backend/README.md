@@ -16,19 +16,19 @@ Response:
               {
                 "id": "uuid",
                 "type": "cloud",
-                "date": "date time ISO 8601",
-                "coords": {
+                "created_at": "date time ISO 8601",
+                "point": {
                   "x": 0.0,
-                  "y": 0.0,
+                  "y": 0.0
                 }
               },
               {
                 "id": "uuid",
                 "type": "sun",
-                "date": "date time ISO 8601",
-                "coords": {
+                "created_at": "date time ISO 8601",
+                "point": {
                   "x": 0.0,
-                  "y": 0.0,
+                  "y": 0.0
                 }
               }
             ]
@@ -75,12 +75,11 @@ Request:
 
 ```json
 {
-  "username": "name",
+  "user_id": "uuid",
   "type": "cloud|sun", // enum
-  "date": "date time ISO 8601",
   "coords": {
     "x": 0.0,
-    "y": 0.0,
+    "y": 0.0
   }
 }
 ```
@@ -91,10 +90,10 @@ Response:
   "id": "uuid",
   "username": "name",
   "type": "cloud|sun", // enum
-  "date": "date time ISO 8601",
+  "created_at": "date time ISO 8601",
   "coords": {
     "x": 0.0,
-    "y": 0.0,
+    "y": 0.0
   }
 }
 ```
@@ -109,7 +108,7 @@ Request:
   "id": "uuid",
   "coords": {
     "x": 0.0,
-    "y": 0.0,
+    "y": 0.0
   }
 }
 ```
