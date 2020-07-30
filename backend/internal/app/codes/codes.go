@@ -15,6 +15,7 @@ const (
 	DatabaseError = system + iota
 	SystemError
 	InvalidJSONError
+	EncodeImgFailed
 )
 
 const (
@@ -22,7 +23,6 @@ const (
 	UserAlreadyExists
 	BadgeNotFound
 	UnknownImgFormat
-	EncodeImgFailed
 )
 
 // Validation error codes
@@ -43,6 +43,15 @@ const (
 
 func ToHTTP(code int) int {
 	if code >= validation {
+		return http.StatusBadRequest
+	}
+
+	switch code {
+	case UserNotFound, BadgeNotFound:
+		return http.StatusNotFound
+	case UserAlreadyExists:
+		return http.StatusConflict
+	case UnknownImgFormat:
 		return http.StatusBadRequest
 	}
 
