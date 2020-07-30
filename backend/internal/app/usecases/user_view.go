@@ -3,6 +3,9 @@ package usecases
 import (
 	"context"
 
+	"github.com/lissteron/simplerr"
+
+	"github.com/lissteron/cloudsuny/internal/app/codes"
 	"github.com/lissteron/cloudsuny/internal/app/domain"
 	"github.com/lissteron/cloudsuny/internal/app/usecases/interfaces"
 )
@@ -26,7 +29,7 @@ func (l *ViewUser) Do(ctx context.Context) ([]*domain.User, error) {
 	users, err := l.storage.ListUsers(ctx)
 	if err != nil {
 		l.logger.Errorf("list users failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.DatabaseError)
 	}
 
 	index := make(map[string]*domain.User, len(users))
@@ -38,7 +41,7 @@ func (l *ViewUser) Do(ctx context.Context) ([]*domain.User, error) {
 	badges, err := l.storage.ListBadges(ctx)
 	if err != nil {
 		l.logger.Errorf("list badges failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.DatabaseError)
 	}
 
 	for _, badge := range badges {

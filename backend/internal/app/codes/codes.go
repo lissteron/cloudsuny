@@ -16,6 +16,12 @@ const (
 	InvalidJSONError
 )
 
+const (
+	UserNotFound = useCase + iota
+	UserAlreadyExists
+	BadgeNotFound
+)
+
 // Validation error codes
 type Code int
 

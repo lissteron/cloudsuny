@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/lissteron/simplerr"
+
+	"github.com/lissteron/cloudsuny/internal/app/codes"
 	"github.com/lissteron/cloudsuny/internal/app/domain"
 	"github.com/lissteron/cloudsuny/internal/app/usecases/interfaces"
 )
@@ -31,18 +34,18 @@ func (c *CreateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	user, err := c.storage.FindUserByID(ctx, badge.UserID)
 	if err != nil {
 		c.logger.Errorf("find user by id failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.DatabaseError)
 	}
 
 	if user == nil {
 		c.logger.Error("user not found")
-		return nil, ErrUserNotFound
+		return nil, simplerr.WithCode(ErrUserNotFound, codes.UserNotFound)
 	}
 
 	badge, err = c.storage.CreateBadge(ctx, badge)
 	if err != nil {
 		c.logger.Errorf("create badge failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.DatabaseError)
 	}
 
 	return badge, nil
