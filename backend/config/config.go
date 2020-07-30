@@ -21,14 +21,10 @@ func Init() {
 
 func LoggerConfig() *zap.Config {
 	return &zap.Config{
-		Level:         "debug",
-		CollectorURL:  "",
-		Hostname:      "",
-		Namespace:     "",
-		Source:        "",
-		BuildCommit:   "",
-		ConfigHash:    "",
-		DisableStdout: false,
+		Level:         viper.GetString("logger.level"),
+		CollectorURL:  viper.GetString("logger.collector"),
+		Namespace:     "local",
+		Source:        "github.com/lissteron/cloudsuny",
 	}
 }
 
@@ -42,3 +38,8 @@ func ServerConfig() *server.Config {
 		TLSKeyFile:   viper.GetString("server.tls.key"),
 	}
 }
+/*
+LOGGER_LEVEL=debug
+SERVER_HTTP_PORT=8080
+DB_PATH=./some.db
+ */

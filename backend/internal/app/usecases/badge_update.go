@@ -9,25 +9,25 @@ import (
 )
 
 var (
-	ErrUserAlreadyExists = errors.New("user already exists")
+	ErrBadgeNotFound = errors.New("badge not found")
 )
 
-type CreateUser struct {
+type UpdateBadge struct {
 	storage interfaces.Storage
 	logger  interfaces.Logger
 }
 
-func NewCreateUser(
+func NewUpdateBadge(
 	storage interfaces.Storage,
 	logger interfaces.Logger,
-) *CreateUser {
-	return &CreateUser{
+) *UpdateBadge {
+	return &UpdateBadge{
 		storage: storage,
 		logger:  logger,
 	}
 }
 
-func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, error) {
+func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badge, error) {
 	storage, err := c.storage.WithTransaction(ctx)
 	if err != nil {
 		c.logger.Errorf("start tx failed: %v", err)
@@ -36,19 +36,20 @@ func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, e
 
 	defer storage.RollbackTransaction()
 
-	exists, err := storage.FindUserByUsername(ctx, user.Username)
+	exists, err := storage.FindBadgeByID(ctx, badge.ID)
 	if err != nil {
-		c.logger.Errorf("find user failed: %v", err)
+		c.logger.Errorf("find badge failed: %v", err)
 		return nil, err
 	}
 
-	if exists != nil {
-		return nil, ErrUserAlreadyExists
+	if exists == nil {
+		c.logger.Errorf("badge with id = %s not found", badge.ID)
+		return nil, ErrBadgeNotFound
 	}
 
-	user, err = storage.CreateUser(ctx, user)
+	badge, err = storage.UpdateBadge(ctx, badge)
 	if err != nil {
-		c.logger.Errorf("create user failed: %v", err)
+		c.logger.Errorf("update badge failed: %v", err)
 		return nil, err
 	}
 
@@ -57,5 +58,5 @@ func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, e
 		return nil, err
 	}
 
-	return user, nil
+	return badge, nil
 }

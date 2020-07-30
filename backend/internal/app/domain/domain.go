@@ -18,6 +18,7 @@ const (
 
 type Badge struct {
 	ID        string    `json:"id"`
+	UserID    string    `json:"user_id"`
 	Type      string    `json:"type"`
 	Point     Point     `json:"point"`
 	CreatedAt time.Time `json:"created_at"`

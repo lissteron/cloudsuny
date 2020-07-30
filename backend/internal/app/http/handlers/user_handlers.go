@@ -24,24 +24,24 @@ type CreateUser interface {
 	Do(ctx context.Context, user *domain.User) (*domain.User, error)
 }
 
-type ListUser interface {
+type ViewUser interface {
 	Do(ctx context.Context) ([]*domain.User, error)
 }
 
 type UserHandlers struct {
 	create CreateUser
-	list   ListUser
+	view   ViewUser
 	logger Logger
 }
 
 func NewUserHandlers(
 	create CreateUser,
-	list ListUser,
+	view ViewUser,
 	logger Logger,
 ) *UserHandlers {
 	return &UserHandlers{
 		create: create,
-		list:   list,
+		view:   view,
 		logger: logger,
 	}
 }
@@ -69,13 +69,13 @@ func (h *UserHandlers) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	resp.SetData(result)
 }
 
-func (h *UserHandlers) ListHandler(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandlers) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	resp, ctx := response.NewBaseResponse(), r.Context()
 	defer resp.Write(w, h.logger)
 
-	result, err := h.list.Do(ctx)
+	result, err := h.view.Do(ctx)
 	if err != nil {
-		h.logger.Errorf("get list user failed: %v", err)
+		h.logger.Errorf("view users failed: %v", err)
 		resp.ParseError(err)
 
 		return

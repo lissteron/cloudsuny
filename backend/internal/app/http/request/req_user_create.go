@@ -12,8 +12,7 @@ import (
 )
 
 type CreateUserRequest struct {
-	Username string `json:"username"`
-	Avatar   string `json:"avatar"`
+	domain.User
 }
 
 func ReadCreateUserRequest(r *http.Request) (*CreateUserRequest, error) {
@@ -38,8 +37,5 @@ func (r *CreateUserRequest) Validate() error {
 }
 
 func (r *CreateUserRequest) ToInput() *domain.User {
-	return &domain.User{
-		Username: r.Username,
-		Avatar:   r.Avatar,
-	}
+	return &r.User
 }

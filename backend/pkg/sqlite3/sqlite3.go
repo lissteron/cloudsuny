@@ -32,7 +32,7 @@ func (c *Client) DB() *sqlx.DB {
 func (c *Client) initDB() error {
 	query := `
 	CREATE TABLE IF NOT EXISTS "user" (
-		id UUID NOT NULL,
+		id UUID NOT NULL PRIMARY KEY,
 		username TEXT NULL,
 		avatar TEXT NOT NULL DEFAULT '',
 		created_at TIMESTAMP NOT NULL
@@ -45,7 +45,7 @@ func (c *Client) initDB() error {
 
 	query = `
 	CREATE TABLE IF NOT EXISTS "badge" (
-		id UUID NOT NULL,
+		id UUID NOT NULL PRIMARY KEY,
 		user_id UUID NOT NULL,
 		type TEXT NOT NULL,
 		x NUMERIC NOT NULL DEFAULT 0,
@@ -53,6 +53,12 @@ func (c *Client) initDB() error {
 		created_at TIMESTAMP NOT NULL,
 		CONSTRAINT fk_badge_ref_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE RESTRICT ON UPDATE CASCADE
 	);`
+
+	if _, err := c.db.Exec(query); err != nil {
+		return err
+	}
+
+	query = `CREATE UNIQUE INDEX IF NOT EXISTS user_username_key ON "user"(username);`
 
 	if _, err := c.db.Exec(query); err != nil {
 		return err

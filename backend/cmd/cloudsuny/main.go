@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/gadavy/lhw/zap"
+	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/lissteron/cloudsuny/config"
@@ -35,7 +36,7 @@ func main() {
 	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM)
 
 	// Init db
-	sqliteDB, err := sqlite3.NewClient("./some.db")
+	sqliteDB, err := sqlite3.NewClient(viper.GetString("db.path"))
 	if err != nil {
 		logger.Fatalf("init db failed: %v", err)
 	}
@@ -45,13 +46,17 @@ func main() {
 
 	// Init usecases
 	var (
-		createUser = usecases.NewCreateUser(repository, logger)
-		listUser   = usecases.NewListUser(repository, logger)
+		userCreate = usecases.NewCreateUser(repository, logger)
+		userList   = usecases.NewViewUser(repository, logger)
+
+		badgeCreate = usecases.NewCreateBadge(repository, logger)
+		badgeUpdate = usecases.NewUpdateBadge(repository, logger)
 	)
 
 	// Init handlers
 	var (
-		userHandlers = handlers.NewUserHandlers(createUser, listUser, logger)
+		userHandlers = handlers.NewUserHandlers(userCreate, userList, logger)
+		badgeHandler = handlers.NewBadgeHandlers(badgeCreate, badgeUpdate, logger)
 	)
 
 	srv := server.NewHTTP(config.ServerConfig())
@@ -59,7 +64,9 @@ func main() {
 	r := srv.Router()
 	r1 := r.PathPrefix("/api/v1/").Subrouter()
 	r1.HandleFunc("/user/create", userHandlers.CreateHandler)
-	r1.HandleFunc("/view", userHandlers.ListHandler)
+	r1.HandleFunc("/view", userHandlers.ViewHandler)
+	r1.HandleFunc("/badge/create", badgeHandler.CreateHandler)
+	r1.HandleFunc("/badge/update", badgeHandler.UpdateHandler)
 
 	errGroup, ctx := errgroup.WithContext(context.Background())
 

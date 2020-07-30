@@ -26,6 +26,9 @@ func (s Code) String() string {
 const (
 	ValidUserUsernameRequired Code = validation + iota
 	ValidUserAvatarRequired
+	ValidBadgeUserIDRequired
+	ValidBadgeTypeRequired
+	ValidBadgeTypeIn
 )
 
 func ToHTTP(code int) int {

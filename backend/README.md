@@ -69,7 +69,7 @@ Response:
 
 ```
 
-#### POST /api/v1/badge/add 
+#### POST /api/v1/badge/create
 
 Request:
 

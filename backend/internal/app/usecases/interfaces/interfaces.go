@@ -26,4 +26,9 @@ type Storage interface {
 	ListUsers(ctx context.Context) ([]*domain.User, error)
 	FindUserByID(ctx context.Context, userID string) (*domain.User, error)
 	FindUserByUsername(ctx context.Context, username string) (*domain.User, error)
+
+	CreateBadge(ctx context.Context, badge *domain.Badge) (*domain.Badge, error)
+	FindBadgeByID(ctx context.Context, badgeID string) (*domain.Badge, error)
+	ListBadges(ctx context.Context) ([]*domain.Badge, error)
+	UpdateBadge(ctx context.Context, badge *domain.Badge) (*domain.Badge, error)
 }

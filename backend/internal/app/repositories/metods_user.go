@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -13,6 +14,7 @@ import (
 func (r *Repository) CreateUser(ctx context.Context, user *domain.User) (*domain.User, error) {
 	model := models.UserFromDomain(user)
 	model.ID = uuid.New().String()
+	model.CreatedAt = time.Now()
 
 	query := `INSERT INTO user (id,username,avatar,created_at) VALUES (:id,:username,:avatar,:created_at)`
 
@@ -21,24 +23,6 @@ func (r *Repository) CreateUser(ctx context.Context, user *domain.User) (*domain
 	}
 
 	return model.ToDomain(), nil
-}
-
-func (r *Repository) ListUsers(ctx context.Context) ([]*domain.User, error) {
-	query := "SELECT id,username,avatar,created_at FROM user"
-
-	var dest []*models.User
-
-	if err := r.database().SelectContext(ctx, &dest, query); err != nil {
-		return nil, err
-	}
-
-	result := make([]*domain.User, len(dest))
-
-	for idx, user := range dest {
-		result[idx] = user.ToDomain()
-	}
-
-	return result, nil
 }
 
 func (r *Repository) FindUserByID(ctx context.Context, userID string) (*domain.User, error) {
@@ -71,4 +55,22 @@ func (r *Repository) FindUserByUsername(ctx context.Context, username string) (*
 	}
 
 	return model.ToDomain(), nil
+}
+
+func (r *Repository) ListUsers(ctx context.Context) ([]*domain.User, error) {
+	query := "SELECT id,username,avatar,created_at FROM user"
+
+	var dest []*models.User
+
+	if err := r.database().SelectContext(ctx, &dest, query); err != nil {
+		return nil, err
+	}
+
+	result := make([]*domain.User, len(dest))
+
+	for idx, user := range dest {
+		result[idx] = user.ToDomain()
+	}
+
+	return result, nil
 }
