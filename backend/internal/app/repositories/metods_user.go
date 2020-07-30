@@ -29,7 +29,7 @@ func (r *Repository) CreateUser(ctx context.Context, user *domain.User) (*domain
 func (r *Repository) FindUserByID(ctx context.Context, userID string) (*domain.User, error) {
 	query := "SELECT id,username,avatar,created_at FROM user WHERE id = ?"
 
-	var model = &models.User{}
+	model := &models.User{}
 
 	if err := r.database().GetContext(ctx, model, query, userID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -45,7 +45,7 @@ func (r *Repository) FindUserByID(ctx context.Context, userID string) (*domain.U
 func (r *Repository) FindUserByUsername(ctx context.Context, username string) (*domain.User, error) {
 	query := "SELECT id,username,avatar,created_at FROM user WHERE username = ?"
 
-	var model = &models.User{}
+	model := &models.User{}
 
 	if err := r.database().GetContext(ctx, model, query, username); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

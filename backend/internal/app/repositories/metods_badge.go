@@ -29,7 +29,7 @@ func (r *Repository) CreateBadge(ctx context.Context, badge *domain.Badge) (*dom
 func (r *Repository) FindBadgeByID(ctx context.Context, badgeID string) (*domain.Badge, error) {
 	query := "SELECT id,user_id,type,x,y,created_at FROM badge WHERE id = ?"
 
-	var model = &models.Badge{}
+	model := &models.Badge{}
 
 	if err := r.database().GetContext(ctx, model, query, badgeID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
