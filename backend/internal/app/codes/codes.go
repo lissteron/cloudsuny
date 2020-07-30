@@ -26,6 +26,7 @@ func (s Code) String() string {
 const (
 	ValidUserUsernameRequired Code = validation + iota
 	ValidUserAvatarRequired
+	ValidBadgeIDRequired
 	ValidBadgeUserIDRequired
 	ValidBadgeTypeRequired
 	ValidBadgeTypeIn

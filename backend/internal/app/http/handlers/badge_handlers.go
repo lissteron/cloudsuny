@@ -59,5 +59,24 @@ func (h *BadgeHandlers) CreateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *BadgeHandlers) UpdateHandler(w http.ResponseWriter, r *http.Request) {
+	resp, ctx := response.NewBaseResponse(), r.Context()
+	defer resp.Write(w, h.logger)
 
+	req, err := request.ReadUpdateBadgeRequest(r)
+	if err != nil {
+		h.logger.Errorf("read update badge request failed: %v", err)
+		resp.ParseError(err)
+
+		return
+	}
+
+	result, err := h.update.Do(ctx, req.ToInput())
+	if err != nil {
+		h.logger.Errorf("update badge failed: %v", err)
+		resp.ParseError(err)
+
+		return
+	}
+
+	resp.SetData(result)
 }
