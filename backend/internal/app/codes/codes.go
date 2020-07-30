@@ -13,6 +13,7 @@ const (
 
 const (
 	DatabaseError = system + iota
+	SystemError
 	InvalidJSONError
 )
 
@@ -20,6 +21,8 @@ const (
 	UserNotFound = useCase + iota
 	UserAlreadyExists
 	BadgeNotFound
+	UnknownImgFormat
+	EncodeImgFailed
 )
 
 // Validation error codes

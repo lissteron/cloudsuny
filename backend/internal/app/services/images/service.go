@@ -12,6 +12,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/lissteron/simplerr"
+
+	"github.com/lissteron/cloudsuny/internal/app/codes"
 	"github.com/lissteron/cloudsuny/internal/app/domain"
 )
 
@@ -56,7 +59,7 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 	file, err := os.Create(path.Join(s.dir, name))
 	if err != nil {
 		s.logger.Errorf("open file failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.SystemError)
 	}
 
 	defer file.Close()
@@ -69,12 +72,12 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 	case "gif":
 		err = gif.Encode(file, img.Image, nil)
 	default:
-		return nil, ErrUnknownFormat
+		return nil, simplerr.WithCode(ErrUnknownFormat, codes.UnknownImgFormat)
 	}
 
 	if err != nil {
 		s.logger.Errorf("encode image failed: %v", err)
-		return nil, err
+		return nil, simplerr.WithCode(err, codes.EncodeImgFailed)
 	}
 
 	return img, nil
