@@ -46,6 +46,7 @@ func (c *CreateUser) Do(ctx context.Context, user *domain.User) (*domain.User, e
 	}
 
 	if exists != nil {
+		c.logger.Warnf("user with username = %s already exists", user.Username)
 		return nil, simplerr.WrapWithCode(ErrUserAlreadyExists, codes.UserAlreadyExists, "user already exists")
 	}
 

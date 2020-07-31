@@ -31,7 +31,7 @@ func (h *ImagesHandlers) UploadPhotoHandler(w http.ResponseWriter, r *http.Reque
 
 	req, err := request.ReadUploadImageRequest(r)
 	if err != nil {
-		h.logger.Errorf("read upload image request failed: %v", err)
+		h.logger.Warnf("read upload image request failed: %v", err)
 		resp.ParseError(err)
 
 		return

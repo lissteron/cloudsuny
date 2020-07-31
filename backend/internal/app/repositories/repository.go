@@ -9,8 +9,7 @@ import (
 )
 
 var (
-	ErrTxNotStarted    = errors.New("transaction not started")
-	ErrInvalidDatabase = errors.New("invalid database")
+	ErrTxNotStarted = errors.New("transaction not started")
 )
 
 type DB interface {

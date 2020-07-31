@@ -52,7 +52,7 @@ func (h *UserHandlers) CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	req, err := request.ReadCreateUserRequest(r)
 	if err != nil {
-		h.logger.Errorf("read create user request failed: %v", err)
+		h.logger.Warnf("read create user request failed: %v", err)
 		resp.ParseError(err)
 
 		return
