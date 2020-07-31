@@ -1,13 +1,17 @@
 version: '3'
 services:
   cloudsuny-backend:
-    image: golang:1.14
+    image: golang:1.14-alpine
     volumes:
       - ./backend/:/app
       - ./data/db/:/db/
       - ./data/images/:/images/
     working_dir: /app/cmd/cloudsuny/
-    command: go run main.go
+    command: [
+        "/bin/sh",
+        "-c",
+        "apk update && apk add --no-cache ca-certificates gcc musl-dev && ./run.sh"
+      ]
     environment:
       - SERVER_HTTP_PORT=8080
       - SERVER_CERT=
