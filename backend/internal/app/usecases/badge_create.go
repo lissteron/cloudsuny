@@ -38,7 +38,7 @@ func (c *CreateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	}
 
 	if user == nil {
-		c.logger.Error("user not found")
+		c.logger.Warnf("user with id = %s not found", badge.UserID)
 		return nil, simplerr.WrapWithCode(ErrUserNotFound, codes.UserNotFound, "user not found")
 	}
 

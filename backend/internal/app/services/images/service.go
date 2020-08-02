@@ -1,7 +1,6 @@
 package images
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"os"
@@ -18,10 +17,6 @@ import (
 const (
 	imageFolder = "images"
 	maxRandInt  = 31
-)
-
-var (
-	ErrUnknownImgFormat = errors.New("unknown img format")
 )
 
 type Logger interface {

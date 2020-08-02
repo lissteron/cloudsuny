@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/gadavy/lhw/zap"
+	"github.com/loghole/lhw/zap"
 	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 
@@ -26,7 +26,7 @@ func main() {
 	// Init config, logger, exit chan
 	config.Init()
 
-	logger, err := zap.NewLogger(config.LoggerConfig())
+	logger, err := zap.NewLogger(config.LoggerConfig(), zap.AddCaller())
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stdout, "init logger failed: %v", err)
 		os.Exit(1)

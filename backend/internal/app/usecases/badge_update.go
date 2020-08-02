@@ -46,7 +46,7 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	}
 
 	if exists == nil {
-		c.logger.Errorf("badge with id = %s not found", badge.ID)
+		c.logger.Warnf("badge with id = %s not found", badge.ID)
 		return nil, simplerr.WrapWithCode(ErrBadgeNotFound, codes.BadgeNotFound, "badge not found")
 	}
 

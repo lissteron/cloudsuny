@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gadavy/lhw/zap"
+	"github.com/loghole/lhw/zap"
 	"github.com/spf13/viper"
 
 	"github.com/lissteron/cloudsuny/pkg/server"

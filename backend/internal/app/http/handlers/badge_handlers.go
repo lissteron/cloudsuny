@@ -41,7 +41,7 @@ func (h *BadgeHandlers) CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	req, err := request.ReadCreateBadgeRequest(r)
 	if err != nil {
-		h.logger.Errorf("read create badge request failed: %v", err)
+		h.logger.Warnf("read create badge request failed: %v", err)
 		resp.ParseError(err)
 
 		return
@@ -64,7 +64,7 @@ func (h *BadgeHandlers) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	req, err := request.ReadUpdateBadgeRequest(r)
 	if err != nil {
-		h.logger.Errorf("read update badge request failed: %v", err)
+		h.logger.Warnf("read update badge request failed: %v", err)
 		resp.ParseError(err)
 
 		return
