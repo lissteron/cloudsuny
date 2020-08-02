@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	validation "github.com/gadavy/ozzo-validation/v4"
-	json "github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/lissteron/simplerr"
 
 	"github.com/lissteron/cloudsuny/internal/app/codes"
@@ -38,7 +38,7 @@ func (r *BaseResponse) Write(w http.ResponseWriter, log Logger) {
 		w.WriteHeader(r.Status)
 	}
 
-	if err := json.NewEncoder(w).Encode(r); err != nil {
+	if err := jsoniter.NewEncoder(w).Encode(r); err != nil {
 		log.Errorf("write response failed: %v", err)
 	}
 }
