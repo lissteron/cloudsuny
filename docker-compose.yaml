@@ -1,7 +1,7 @@
 version: '3'
 services:
   cloudsuny-backend:
-    image: golang:1.14-alpine
+    image: golang:1.15-alpine
     volumes:
       - ./backend/:/app
       - ./data/db/:/db/
@@ -25,3 +25,16 @@ services:
       - PATH_IMG=/images
     ports:
       - 8080:8080
+
+  cloudsuny-frontend:
+    image: node:12.8-alpine
+    volumes:
+      - ./frontend/:/app
+    working_dir: /app/
+    command: [
+        "/bin/sh",
+        "-c",
+        "yarn install && yarn serve"
+      ]
+    ports:
+      - 3000:8080
