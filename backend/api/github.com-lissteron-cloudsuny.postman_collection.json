@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"username-2\",\n\t\"avatar\": \"images/1cg5v9793g7ump.jpeg\"\n}",
+					"raw": "{\n\t\"username\": \"username-3\",\n\t\"avatar\": \"images/1cg617uh7qo18i.jpeg\"\n}",
 					"options": {
 						"raw": {}
 					}
@@ -83,7 +83,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": \"bd6a8cc9-be19-414b-9dce-cfd24e1a6a5c\",\n    \"type\": \"cloud\",\n    \"coords\": {\n        \"x\": 0,\n        \"y\": 0\n    }\n}",
+					"raw": "{\n    \"user_id\": \"ec24f8b3-005d-4a90-befc-f7a8bb94577c\",\n    \"type\": \"cloud\",\n    \"point\": {\n        \"x\": 555,\n        \"y\": 111\n    }\n}",
 					"options": {
 						"raw": {}
 					}
@@ -153,8 +153,8 @@
 					"formdata": [
 						{
 							"key": "data",
-							"value": "",
-							"type": "file"
+							"type": "file",
+							"src": "/Users/gdubrovin/Documents/photo_2019-10-09_10-51-38.jpg"
 						},
 						{
 							"key": "type",
@@ -168,9 +168,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/image/upload",
+					"raw": "{{local_host}}/api/v1/image/upload",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
@@ -207,12 +207,12 @@
 	],
 	"variable": [
 		{
-			"id": "b9627e3f-5bd0-4098-988b-1a3899a5773c",
+			"id": "dbbad807-efde-4789-ba49-4f31446d10de",
 			"key": "local_host",
 			"value": "127.0.0.1:8080"
 		},
 		{
-			"id": "87bace9c-a844-4a8a-b89b-ad303b1a3620",
+			"id": "bc51704c-d723-44e4-b802-5d8090da86c8",
 			"key": "stage_host",
 			"value": "http://95.213.195.205:34215"
 		}
