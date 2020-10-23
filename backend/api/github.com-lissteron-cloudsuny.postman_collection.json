@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "a357aff8-34dd-4533-b0e1-bf3b73c8558a",
+		"name": "github.com/lissteron/cloudsuny",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User_Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"username-2\",\n\t\"avatar\": \"images/1cg5v9793g7ump.jpeg\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{local_host}}/api/v1/user/create",
+					"host": [
+						"{{local_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User_ListWithBadges",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local_host}}/api/v1/user/list/with_badges",
+					"host": [
+						"{{local_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"list",
+						"with_badges"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Badge_Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"bd6a8cc9-be19-414b-9dce-cfd24e1a6a5c\",\n    \"type\": \"cloud\",\n    \"coords\": {\n        \"x\": 0,\n        \"y\": 0\n    }\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{local_host}}/api/v1/badge/create",
+					"host": [
+						"{{local_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"badge",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Badge_Update",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1c6bb831-22b1-4204-9ae2-b2fe06ac69ab\",\n    \"point\": {\n        \"x\": 0.55,\n        \"y\": -100.19\n    }\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{local_host}}/api/v1/badge/update",
+					"host": [
+						"{{local_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"badge",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UploadImage",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Forwarded-Host",
+						"value": "test-domain-1.fastshop.ru",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"value": "",
+							"type": "file"
+						},
+						{
+							"key": "type",
+							"value": "shop",
+							"type": "text",
+							"disabled": true
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/image/upload",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"image",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5bdfc7c1-c577-4a94-9bbc-4462b7e5f2fe",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a65252c9-4d40-442f-af85-554ae3537298",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b9627e3f-5bd0-4098-988b-1a3899a5773c",
+			"key": "local_host",
+			"value": "127.0.0.1:8080"
+		},
+		{
+			"id": "87bace9c-a844-4a8a-b89b-ad303b1a3620",
+			"key": "stage_host",
+			"value": "http://95.213.195.205:34215"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
