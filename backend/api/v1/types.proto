@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 
 package types.v1;
+option go_package = "types";
 
 message Point {
   double x = 1 [json_name = "x"];

@@ -15,7 +15,7 @@ require (
 	github.com/json-iterator/go v1.1.10
 	github.com/lissteron/simplerr v0.5.0
 	github.com/loghole/tracing v0.11.0
-	github.com/loghole/tron v0.1.1-0.20201021173157-6dfe6c85aa38
+	github.com/loghole/tron v0.1.1-0.20201023225117-98cda19a484d
 	github.com/mattn/go-sqlite3 v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.7.1

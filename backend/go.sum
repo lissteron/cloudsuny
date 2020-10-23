@@ -177,6 +177,8 @@ github.com/loghole/tracing v0.11.0 h1:cC2wcTLm6ZOMwnP6hbXvIZmc8hnqWYFI36Y8ilDwJe
 github.com/loghole/tracing v0.11.0/go.mod h1:skUbaVelRgBGF1Q9SlSQsqgVcUiC01If4o/1m6M0qg0=
 github.com/loghole/tron v0.1.1-0.20201021173157-6dfe6c85aa38 h1:NlLlS5e5NhTmpgFctseHzehFEWcfZwkGfXE9c1oaB5M=
 github.com/loghole/tron v0.1.1-0.20201021173157-6dfe6c85aa38/go.mod h1:I8jmSGkxLvkClufC8rmNslXrHYst+ZEzNHNI3ULzYvo=
+github.com/loghole/tron v0.1.1-0.20201023225117-98cda19a484d h1:I198198G/ep1j5r7u9h8ivQROkt2XXKppdAc/ku4uAM=
+github.com/loghole/tron v0.1.1-0.20201023225117-98cda19a484d/go.mod h1:I8jmSGkxLvkClufC8rmNslXrHYst+ZEzNHNI3ULzYvo=
 github.com/magiconair/properties v1.8.1 h1:ZC2Vc7/ZFkGmsVC9KvOjumD+G5lXy2RtTKyzRKO2BQ4=
 github.com/magiconair/properties v1.8.1/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
 github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329 h1:2gxZ0XQIU/5z3Z3bUBu+FXuk2pFbkN6tcwi/pjyaDic=

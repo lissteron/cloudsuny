@@ -8,9 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var (
-	ErrTxNotStarted = errors.New("transaction not started")
-)
+var ErrTxNotStarted = errors.New("transaction not started")
 
 type DB interface {
 	GetContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error

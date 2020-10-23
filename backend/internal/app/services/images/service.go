@@ -33,14 +33,14 @@ type Logger interface {
 type Service struct {
 	dir    string
 	logger Logger
-	rnd    rand.Source
+	rnd    *rand.Rand
 }
 
 func NewService(dir string, logger Logger) *Service {
 	return &Service{
 		dir:    dir,
 		logger: logger,
-		rnd:    rand.New(rand.NewSource(time.Now().UnixNano())),
+		rnd:    rand.New(rand.NewSource(time.Now().UnixNano())), // nolint:gosec //name rand
 	}
 }
 
@@ -51,6 +51,7 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 	file, err := os.Create(path.Join(s.dir, name))
 	if err != nil {
 		s.logger.Errorf("open file failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.SystemError, "open file failed")
 	}
 
@@ -58,6 +59,7 @@ func (s *Service) UploadImage(img *domain.Image) (*domain.Image, error) {
 
 	if _, err := file.Write(img.Bytes); err != nil {
 		s.logger.Errorf("encode image failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.SystemError, "write image failed")
 	}
 
@@ -71,7 +73,7 @@ func (s *Service) GetStoragePath() string {
 func (s *Service) generateRandomID() string {
 	buf := make([]byte, 0)
 	buf = append(buf, strconv.FormatInt(time.Now().UnixNano(), 32)...)
-	buf = append(buf, strconv.FormatInt(rand.New(s.rnd).Int63n(maxRandInt), 32)...)
+	buf = append(buf, strconv.FormatInt(s.rnd.Int63n(maxRandInt), 32)...)
 
 	return string(buf)
 }

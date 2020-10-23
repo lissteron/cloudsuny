@@ -1,4 +1,4 @@
-package types_v1
+package types
 
 import (
 	"github.com/lissteron/cloudsuny/internal/app/domain"
