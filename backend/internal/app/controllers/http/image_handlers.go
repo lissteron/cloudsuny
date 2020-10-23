@@ -1,11 +1,13 @@
-package handlers
+package http
 
 import (
 	"net/http"
 
+	"github.com/loghole/tracing/tracelog"
+
+	"github.com/lissteron/cloudsuny/internal/app/controllers/http/request"
+	"github.com/lissteron/cloudsuny/internal/app/controllers/http/response"
 	"github.com/lissteron/cloudsuny/internal/app/domain"
-	"github.com/lissteron/cloudsuny/internal/app/http/request"
-	"github.com/lissteron/cloudsuny/internal/app/http/response"
 )
 
 type ImagesService interface {
@@ -15,10 +17,10 @@ type ImagesService interface {
 
 type ImagesHandlers struct {
 	service ImagesService
-	logger  Logger
+	logger  tracelog.Logger
 }
 
-func NewImagesHandlers(service ImagesService, logger Logger) *ImagesHandlers {
+func NewImagesHandlers(service ImagesService, logger tracelog.Logger) *ImagesHandlers {
 	return &ImagesHandlers{
 		service: service,
 		logger:  logger,
@@ -26,12 +28,12 @@ func NewImagesHandlers(service ImagesService, logger Logger) *ImagesHandlers {
 }
 
 func (h *ImagesHandlers) UploadPhotoHandler(w http.ResponseWriter, r *http.Request) {
-	resp := response.NewBaseResponse()
+	ctx, resp := r.Context(), response.NewBaseResponse()
 	defer resp.Write(w, h.logger)
 
 	req, err := request.ReadUploadImageRequest(r)
 	if err != nil {
-		h.logger.Warnf("read upload image request failed: %v", err)
+		h.logger.Warnf(ctx, "read upload image request failed: %v", err)
 		resp.ParseError(err)
 
 		return
@@ -39,7 +41,7 @@ func (h *ImagesHandlers) UploadPhotoHandler(w http.ResponseWriter, r *http.Reque
 
 	result, err := h.service.UploadImage(req.ToInput())
 	if err != nil {
-		h.logger.Errorf("upload image failed: %v", err)
+		h.logger.Errorf(ctx, "upload image failed: %v", err)
 		resp.ParseError(err)
 
 		return

@@ -6,35 +6,22 @@ services:
       - ./backend/:/app
       - ./data/db/:/db/
       - ./data/images/:/images/
-    working_dir: /app/cmd/cloudsuny/
-    command: [
-        "/bin/sh",
-        "-c",
-        "apk update && apk add --no-cache ca-certificates gcc musl-dev && ./run.sh"
-      ]
-    environment:
-      - SERVER_HTTP_PORT=8080
-      - SERVER_CERT=
-      - SERVER_KEY=
-
-      - LOGGER_LEVEL=debug
-      - LOGGER_NAMESPACE=dev
-      - LOGGER_COLLECTOR_URL=
-
-      - PATH_DB=/db/database.db
-      - PATH_IMG=/images
+    working_dir: /app
+    command: ["/bin/sh", "-c", "apk add --no-cache make ca-certificates gcc musl-dev && make run-local"]
     ports:
-      - 8080:8080
+      - 8080:8080 # public http
+      - 8081:8081 # public grpc
+      - 8082:8082 # admin http
 
-  cloudsuny-frontend:
-    image: node:12.8-alpine
-    volumes:
-      - ./frontend/:/app
-    working_dir: /app/
-    command: [
-        "/bin/sh",
-        "-c",
-        "yarn install && yarn serve"
-      ]
-    ports:
-      - 3000:8080
+#  cloudsuny-frontend:
+#    image: node:12.8-alpine
+#    volumes:
+#      - ./frontend/:/app
+#    working_dir: /app/
+#    command: [
+#        "/bin/sh",
+#        "-c",
+#        "yarn install && yarn serve"
+#      ]
+#    ports:
+#      - 3000:8080

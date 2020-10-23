@@ -1,19 +1,16 @@
 package response
 
 import (
+	"context"
 	"net/http"
 	"strconv"
-	"strings"
 
-	validation "github.com/gadavy/ozzo-validation/v4"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/lissteron/simplerr"
-
-	"github.com/lissteron/cloudsuny/internal/app/codes"
 )
 
 type Logger interface {
-	Errorf(template string, args ...interface{})
+	Errorf(ctx context.Context, template string, args ...interface{})
 }
 
 type BaseResponse struct {
@@ -39,7 +36,7 @@ func (r *BaseResponse) Write(w http.ResponseWriter, log Logger) {
 	}
 
 	if err := jsoniter.NewEncoder(w).Encode(r); err != nil {
-		log.Errorf("write response failed: %v", err)
+		log.Errorf(context.TODO(), "write response failed: %v", err)
 	}
 }
 
@@ -48,28 +45,10 @@ func (r *BaseResponse) SetData(v interface{}) {
 }
 
 func (r *BaseResponse) ParseError(err error) {
-	switch e1 := err.(type) {
-	case validation.Errors:
-		r.Status = http.StatusBadRequest
+	r.Status = simplerr.GetCode(err).HTTP()
 
-		for field, e2 := range e1 {
-			if e3, ok := e2.(validation.Error); ok {
-				r.Errors = append(r.Errors, RespError{
-					Code:   e3.Code(),
-					Detail: strings.Join([]string{field, e3.Error()}, ": "),
-				})
-			} else {
-				r.ParseError(e2)
-			}
-		}
-	default:
-		code := simplerr.GetCode(err)
-
-		r.Status = codes.ToHTTP(code)
-
-		r.Errors = append(r.Errors, RespError{
-			Code:   strconv.Itoa(code),
-			Detail: simplerr.GetText(err),
-		})
-	}
+	r.Errors = append(r.Errors, RespError{
+		Code:   strconv.Itoa(simplerr.GetCode(err).Int()),
+		Detail: err.Error(),
+	})
 }

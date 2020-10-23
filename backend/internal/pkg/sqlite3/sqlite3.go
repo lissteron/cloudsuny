@@ -29,6 +29,10 @@ func (c *Client) DB() *sqlx.DB {
 	return c.db
 }
 
+func (c *Client) Close() error {
+	return c.db.Close()
+}
+
 func (c *Client) initDB() error {
 	query := `
 	CREATE TABLE IF NOT EXISTS "user" (

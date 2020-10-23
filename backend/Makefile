@@ -1,11 +1,6 @@
-GO_TEST_PACKAGES = $(shell go list ./... | egrep -v '(pkg|cmd)')
+include tron.mk
 
-go-mod:
-	go mod download
-
-go-test:
-	go test -race -v -cover -coverprofile coverage.out $(GO_TEST_PACKAGES)
-
-go-lint:
-	golangci-lint run -v
-
+run-local:
+	go run -ldflags "$(LDFLAGS)" \
+	--tags "sqlite_app_armor sqlite_foreign_keys sqlite_vacuum_incr sqlite_fts5 sqlite_json sqlite_secure_delete" \
+	cmd/cloudsuny/main.go --local-config-enabled
