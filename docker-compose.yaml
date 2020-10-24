@@ -5,9 +5,10 @@ services:
     volumes:
       - ./backend/:/app
       - ./data/db/:/db/
+      - ./.git:/app/.git
       - ./data/images/:/images/
     working_dir: /app
-    command: ["/bin/sh", "-c", "apk add --no-cache make ca-certificates gcc musl-dev && make run local-config-enabled"]
+    command: ["/bin/sh", "-c", "apk add --no-cache make git ca-certificates gcc musl-dev && make run local-config-enabled"]
     ports:
       - 8080:8080 # public http
       - 8081:8081 # public grpc
