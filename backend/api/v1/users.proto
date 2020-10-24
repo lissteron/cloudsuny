@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "github.com/lissteron/cloudsuny/api/v1/types.proto";
+
+package users.v1;
+option go_package = "users";
+
+service Users {
+  rpc Create (CreateReq) returns (CreateResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/create"
+      body: "*"
+    };
+  }
+  rpc ListWithBadges (ListWithBadgesReq) returns (ListWithBadgesResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/list/with_badges"
+      body: "*"
+    };
+  }
+}
+
+message CreateReq {
+  string username = 1 [json_name = "username"];
+  string avatar = 2   [json_name = "avatar"];
+}
+
+message CreateResp {
+  User data = 1 [json_name = "data"];
+}
+
+message ListWithBadgesReq {}
+
+message ListWithBadgesResp {
+  repeated User data = 1 [json_name = "data"];
+}
+
+message User {
+  string id = 1                      [json_name = "id"];
+  string username = 2                [json_name = "username"];
+  string avatar = 3                  [json_name = "avatar"];
+  repeated types.v1.Badge badges = 4 [json_name = "badges"];
+}

@@ -11,9 +11,7 @@ import (
 	"github.com/lissteron/cloudsuny/internal/app/usecases/interfaces"
 )
 
-var (
-	ErrUserNotFound = errors.New("user not found")
-)
+var ErrUserNotFound = errors.New("user not found")
 
 type CreateBadge struct {
 	storage interfaces.Storage
@@ -34,17 +32,20 @@ func (c *CreateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	user, err := c.storage.FindUserByID(ctx, badge.UserID)
 	if err != nil {
 		c.logger.Errorf("find user by id failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "find user by id failed")
 	}
 
 	if user == nil {
 		c.logger.Warnf("user with id = %s not found", badge.UserID)
+
 		return nil, simplerr.WrapWithCode(ErrUserNotFound, codes.UserNotFound, "user not found")
 	}
 
 	badge, err = c.storage.CreateBadge(ctx, badge)
 	if err != nil {
 		c.logger.Errorf("create badge failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "create badge failed")
 	}
 

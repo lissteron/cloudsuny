@@ -11,9 +11,7 @@ import (
 	"github.com/lissteron/cloudsuny/internal/app/usecases/interfaces"
 )
 
-var (
-	ErrBadgeNotFound = errors.New("badge not found")
-)
+var ErrBadgeNotFound = errors.New("badge not found")
 
 type UpdateBadge struct {
 	storage interfaces.Storage
@@ -34,6 +32,7 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	storage, err := c.storage.WithTransaction(ctx)
 	if err != nil {
 		c.logger.Errorf("start tx failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "start tx failed")
 	}
 
@@ -42,11 +41,13 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	exists, err := storage.FindBadgeByID(ctx, badge.ID)
 	if err != nil {
 		c.logger.Errorf("find badge failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "find badge failed")
 	}
 
 	if exists == nil {
 		c.logger.Warnf("badge with id = %s not found", badge.ID)
+
 		return nil, simplerr.WrapWithCode(ErrBadgeNotFound, codes.BadgeNotFound, "badge not found")
 	}
 
@@ -55,11 +56,13 @@ func (c *UpdateBadge) Do(ctx context.Context, badge *domain.Badge) (*domain.Badg
 	badge, err = storage.UpdateBadge(ctx, exists)
 	if err != nil {
 		c.logger.Errorf("update badge failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "update badge failed")
 	}
 
 	if err := storage.CommitTransaction(); err != nil {
 		c.logger.Errorf("commit tx failed: %v", err)
+
 		return nil, simplerr.WrapWithCode(err, codes.DatabaseError, "commit tx failed")
 	}
 

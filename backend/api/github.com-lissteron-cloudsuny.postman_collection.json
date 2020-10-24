@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "2a14a48c-915c-47ae-81e4-996606803491",
+		"_postman_id": "a357aff8-34dd-4533-b0e1-bf3b73c8558a",
 		"name": "github.com/lissteron/cloudsuny",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "CreateUser",
+			"name": "User_Create",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -19,12 +19,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"username-4\",\n\t\"avatar\": \"images/1c9khj4qb2kvbh.png\"\n}"
+					"raw": "{\n\t\"username\": \"username-3\",\n\t\"avatar\": \"images/1cg617uh7qo18i.jpeg\"\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/user/create",
+					"raw": "{{local_host}}/api/v1/user/create",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
@@ -37,30 +40,37 @@
 			"response": []
 		},
 		{
-			"name": "UserView",
+			"name": "User_ListWithBadges",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/view",
+					"raw": "{{local_host}}/api/v1/user/list/with_badges",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"view"
+						"user",
+						"list",
+						"with_badges"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "CreateBadge",
+			"name": "Badge_Create",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -73,12 +83,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": \"77e4d43d-5be3-4b7b-9277-809cf18824d3\",\n    \"type\": \"cloud\",\n    \"coords\": {\n        \"x\": 0,\n        \"y\": 0\n    }\n}"
+					"raw": "{\n    \"user_id\": \"ec24f8b3-005d-4a90-befc-f7a8bb94577c\",\n    \"type\": \"cloud\",\n    \"point\": {\n        \"x\": 555,\n        \"y\": 111\n    }\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/badge/create",
+					"raw": "{{local_host}}/api/v1/badge/create",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
@@ -91,7 +104,7 @@
 			"response": []
 		},
 		{
-			"name": "UpdateBadge",
+			"name": "Badge_Update",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -104,12 +117,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"47f08476-4da3-4742-abe1-ef36ea10b95c\",\n    \"point\": {\n        \"x\": 0.55,\n        \"y\": -100.19\n    }\n}"
+					"raw": "{\n    \"id\": \"1c6bb831-22b1-4204-9ae2-b2fe06ac69ab\",\n    \"point\": {\n        \"x\": 0.55,\n        \"y\": -100.19\n    }\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/badge/update",
+					"raw": "{{local_host}}/api/v1/badge/update",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
@@ -138,7 +154,7 @@
 						{
 							"key": "data",
 							"type": "file",
-							"src": ""
+							"src": "/Users/gdubrovin/Documents/photo_2019-10-09_10-51-38.jpg"
 						},
 						{
 							"key": "type",
@@ -146,12 +162,15 @@
 							"type": "text",
 							"disabled": true
 						}
-					]
+					],
+					"options": {
+						"formdata": {}
+					}
 				},
 				"url": {
-					"raw": "{{host}}/api/v1/image/upload",
+					"raw": "{{local_host}}/api/v1/image/upload",
 					"host": [
-						"{{host}}"
+						"{{local_host}}"
 					],
 					"path": [
 						"api",
@@ -168,7 +187,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "ed57d763-ad1f-4d76-9462-3cc48a7b78c2",
+				"id": "5bdfc7c1-c577-4a94-9bbc-4462b7e5f2fe",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -178,7 +197,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "f90e559f-1fe5-4a8c-b7e0-6c676d9068a1",
+				"id": "a65252c9-4d40-442f-af85-554ae3537298",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -188,10 +207,15 @@
 	],
 	"variable": [
 		{
-			"id": "80d72022-3191-44f0-b0b5-178226f186ea",
-			"key": "host",
-			"value": "127.0.0.1:8080",
-			"type": "string"
+			"id": "dbbad807-efde-4789-ba49-4f31446d10de",
+			"key": "local_host",
+			"value": "127.0.0.1:8080"
+		},
+		{
+			"id": "bc51704c-d723-44e4-b802-5d8090da86c8",
+			"key": "stage_host",
+			"value": "http://95.213.195.205:34215"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
