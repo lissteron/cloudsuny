@@ -26,5 +26,4 @@ func (s System) HTTP() int {
 const (
 	DatabaseError System = iota + 1
 	SystemError
-	InvalidJSONError
 )
