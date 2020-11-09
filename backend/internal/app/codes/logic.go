@@ -15,16 +15,29 @@ func (s Logic) Int() int {
 }
 
 func (s Logic) GRPC() int {
-	return int(codes.InvalidArgument)
+	switch s {
+	case UserNotFound, BadgeNotFound:
+		return int(codes.NotFound)
+	case UserAlreadyExists:
+		return int(codes.AlreadyExists)
+	}
+
+	return int(codes.Unknown)
 }
 
 func (s Logic) HTTP() int {
-	return http.StatusBadRequest
+	switch s {
+	case UserNotFound, BadgeNotFound:
+		return http.StatusNotFound
+	case UserAlreadyExists:
+		return http.StatusConflict
+	}
+
+	return http.StatusInternalServerError
 }
 
 const (
 	UserNotFound Logic = iota + 1
 	UserAlreadyExists
 	BadgeNotFound
-	UnknownImgFormat
 )

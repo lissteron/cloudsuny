@@ -13,9 +13,9 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.14.2
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/json-iterator/go v1.1.10
-	github.com/lissteron/simplerr v0.5.0
+	github.com/lissteron/simplerr v0.6.1
 	github.com/loghole/tracing v0.11.0
-	github.com/loghole/tron v0.2.2
+	github.com/loghole/tron v0.5.2
 	github.com/mattn/go-sqlite3 v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.7.1
