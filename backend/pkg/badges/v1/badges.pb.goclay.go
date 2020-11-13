@@ -214,7 +214,7 @@ func NewBadgesHTTPClient(c *http.Client, addr string) *Badges_httpClient {
 	return &Badges_httpClient{c: c, host: addr}
 }
 
-func (c *Badges_httpClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
+func (c *Badges_httpClient) Create(ctx context.Context, in *CreateBadgesReq, opts ...grpc.CallOption) (*CreateBadgesResp, error) {
 	mw, err := httpclient.NewMiddlewareGRPC(opts)
 	if err != nil {
 		return nil, err
@@ -258,14 +258,14 @@ func (c *Badges_httpClient) Create(ctx context.Context, in *CreateReq, opts ...g
 		return nil, errors.Errorf("%v %v: server returned HTTP %v: '%v'", req.Method, req.URL.String(), rsp.StatusCode, string(b))
 	}
 
-	ret := CreateResp{}
+	ret := CreateBadgesResp{}
 
 	err = m.Unmarshal(rsp.Body, &ret)
 
 	return &ret, errors.Wrap(err, "can't unmarshal response")
 }
 
-func (c *Badges_httpClient) Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UpdateResp, error) {
+func (c *Badges_httpClient) Update(ctx context.Context, in *UpdateBadgesReq, opts ...grpc.CallOption) (*UpdateBadgesResp, error) {
 	mw, err := httpclient.NewMiddlewareGRPC(opts)
 	if err != nil {
 		return nil, err
@@ -309,7 +309,7 @@ func (c *Badges_httpClient) Update(ctx context.Context, in *UpdateReq, opts ...g
 		return nil, errors.Errorf("%v %v: server returned HTTP %v: '%v'", req.Method, req.URL.String(), rsp.StatusCode, string(b))
 	}
 
-	ret := UpdateResp{}
+	ret := UpdateBadgesResp{}
 
 	err = m.Unmarshal(rsp.Body, &ret)
 
@@ -320,7 +320,7 @@ func (c *Badges_httpClient) Update(ctx context.Context, in *UpdateReq, opts ...g
 var (
 	pattern_goclay_Badges_Create_0 = "/api/v1/badge/create"
 
-	pattern_goclay_Badges_Create_0_builder = func(in *CreateReq) string {
+	pattern_goclay_Badges_Create_0_builder = func(in *CreateBadgesReq) string {
 		values := url.Values{}
 
 		u := url.URL{
@@ -334,7 +334,7 @@ var (
 
 	pattern_goclay_Badges_Update_0 = "/api/v1/badge/update"
 
-	pattern_goclay_Badges_Update_0_builder = func(in *UpdateReq) string {
+	pattern_goclay_Badges_Update_0_builder = func(in *UpdateBadgesReq) string {
 		values := url.Values{}
 
 		u := url.URL{
@@ -351,7 +351,7 @@ var (
 var (
 	unmarshaler_goclay_Badges_Create_0 = func(r *http.Request) func(interface{}) error {
 		return func(rif interface{}) error {
-			req := rif.(*CreateReq)
+			req := rif.(*CreateBadgesReq)
 
 			if err := errors.Wrap(runtime.PopulateQueryParameters(req, r.URL.Query(), unmarshaler_goclay_Badges_Create_0_boundParams), "couldn't populate query parameters"); err != nil {
 				return httpruntime.TransformUnmarshalerError(err)
@@ -367,7 +367,7 @@ var (
 
 	unmarshaler_goclay_Badges_Update_0 = func(r *http.Request) func(interface{}) error {
 		return func(rif interface{}) error {
-			req := rif.(*UpdateReq)
+			req := rif.(*UpdateBadgesReq)
 
 			if err := errors.Wrap(runtime.PopulateQueryParameters(req, r.URL.Query(), unmarshaler_goclay_Badges_Update_0_boundParams), "couldn't populate query parameters"); err != nil {
 				return httpruntime.TransformUnmarshalerError(err)
@@ -402,7 +402,7 @@ var _swaggerDef_badges_proto = []byte(`{
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateResp"
+              "$ref": "#/definitions/v1CreateBadgesResp"
             }
           }
         },
@@ -412,7 +412,7 @@ var _swaggerDef_badges_proto = []byte(`{
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateReq"
+              "$ref": "#/definitions/v1CreateBadgesReq"
             }
           }
         ],
@@ -428,7 +428,7 @@ var _swaggerDef_badges_proto = []byte(`{
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateResp"
+              "$ref": "#/definitions/v1UpdateBadgesResp"
             }
           }
         },
@@ -438,7 +438,7 @@ var _swaggerDef_badges_proto = []byte(`{
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1UpdateReq"
+              "$ref": "#/definitions/v1UpdateBadgesReq"
             }
           }
         ],
@@ -470,7 +470,7 @@ var _swaggerDef_badges_proto = []byte(`{
         }
       }
     },
-    "v1CreateReq": {
+    "v1CreateBadgesReq": {
       "type": "object",
       "properties": {
         "user_id": {
@@ -484,7 +484,7 @@ var _swaggerDef_badges_proto = []byte(`{
         }
       }
     },
-    "v1CreateResp": {
+    "v1CreateBadgesResp": {
       "type": "object",
       "properties": {
         "data": {
@@ -505,7 +505,7 @@ var _swaggerDef_badges_proto = []byte(`{
         }
       }
     },
-    "v1UpdateReq": {
+    "v1UpdateBadgesReq": {
       "type": "object",
       "properties": {
         "id": {
@@ -516,7 +516,7 @@ var _swaggerDef_badges_proto = []byte(`{
         }
       }
     },
-    "v1UpdateResp": {
+    "v1UpdateBadgesResp": {
       "type": "object",
       "properties": {
         "data": {

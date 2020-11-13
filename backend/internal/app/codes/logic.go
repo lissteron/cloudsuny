@@ -6,12 +6,10 @@ import (
 	"google.golang.org/grpc/codes"
 )
 
-const logic = 2000
-
 type Logic int
 
 func (s Logic) Int() int {
-	return int(s) + logic
+	return int(s)
 }
 
 func (s Logic) GRPC() int {
@@ -37,7 +35,7 @@ func (s Logic) HTTP() int {
 }
 
 const (
-	UserNotFound Logic = iota + 1
-	UserAlreadyExists
-	BadgeNotFound
+	UserNotFound      Logic = 2000
+	UserAlreadyExists Logic = 2001
+	BadgeNotFound     Logic = 2002
 )

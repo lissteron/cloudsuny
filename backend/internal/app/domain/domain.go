@@ -12,8 +12,9 @@ type User struct {
 }
 
 const (
-	SunBadge   = "sun"
-	CloudBadge = "cloud"
+	SunBadge    = "sun"
+	CloudBadge  = "cloud"
+	IndianBadge = "indian"
 )
 
 type Badge struct {

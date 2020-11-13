@@ -5,14 +5,17 @@ package users
 
 import (
 	"context"
+	"log"
 
 	desc "github.com/lissteron/cloudsuny/pkg/users/v1"
 )
 
 func (i *Implementation) Create(
 	ctx context.Context,
-	req *desc.CreateReq,
-	) (resp *desc.CreateResp, err error) {
+	req *desc.CreateUsersReq,
+) (resp *desc.CreateUsersResp, err error) {
+	log.Println("Create request")
+
 	if err := req.Validate(); err != nil {
 		i.logger.Warnf(ctx, "validate create user request failed: %v", err)
 
@@ -21,12 +24,12 @@ func (i *Implementation) Create(
 
 	result, err := i.create.Do(ctx, req.ToDomain())
 	if err != nil {
-		i.logger.Errorf(ctx,"create user failed: %v", err)
+		i.logger.Errorf(ctx, "create user failed: %v", err)
 
 		return nil, err
 	}
 
-	resp = &desc.CreateResp{
+	resp = &desc.CreateUsersResp{
 		Data: desc.UserFromDomain(result),
 	}
 

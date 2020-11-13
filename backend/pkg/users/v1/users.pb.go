@@ -28,7 +28,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type CreateReq struct {
+type CreateUsersReq struct {
 	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Avatar               string   `protobuf:"bytes,2,opt,name=avatar,proto3" json:"avatar,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -36,18 +36,18 @@ type CreateReq struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateReq) Reset()         { *m = CreateReq{} }
-func (m *CreateReq) String() string { return proto.CompactTextString(m) }
-func (*CreateReq) ProtoMessage()    {}
-func (*CreateReq) Descriptor() ([]byte, []int) {
+func (m *CreateUsersReq) Reset()         { *m = CreateUsersReq{} }
+func (m *CreateUsersReq) String() string { return proto.CompactTextString(m) }
+func (*CreateUsersReq) ProtoMessage()    {}
+func (*CreateUsersReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_030765f334c86cea, []int{0}
 }
-func (m *CreateReq) XXX_Unmarshal(b []byte) error {
+func (m *CreateUsersReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CreateReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreateUsersReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CreateReq.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreateUsersReq.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -57,51 +57,51 @@ func (m *CreateReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *CreateReq) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateReq.Merge(m, src)
+func (m *CreateUsersReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateUsersReq.Merge(m, src)
 }
-func (m *CreateReq) XXX_Size() int {
+func (m *CreateUsersReq) XXX_Size() int {
 	return m.Size()
 }
-func (m *CreateReq) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateReq.DiscardUnknown(m)
+func (m *CreateUsersReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateUsersReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateReq proto.InternalMessageInfo
+var xxx_messageInfo_CreateUsersReq proto.InternalMessageInfo
 
-func (m *CreateReq) GetUsername() string {
+func (m *CreateUsersReq) GetUsername() string {
 	if m != nil {
 		return m.Username
 	}
 	return ""
 }
 
-func (m *CreateReq) GetAvatar() string {
+func (m *CreateUsersReq) GetAvatar() string {
 	if m != nil {
 		return m.Avatar
 	}
 	return ""
 }
 
-type CreateResp struct {
+type CreateUsersResp struct {
 	Data                 *User    `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateResp) Reset()         { *m = CreateResp{} }
-func (m *CreateResp) String() string { return proto.CompactTextString(m) }
-func (*CreateResp) ProtoMessage()    {}
-func (*CreateResp) Descriptor() ([]byte, []int) {
+func (m *CreateUsersResp) Reset()         { *m = CreateUsersResp{} }
+func (m *CreateUsersResp) String() string { return proto.CompactTextString(m) }
+func (*CreateUsersResp) ProtoMessage()    {}
+func (*CreateUsersResp) Descriptor() ([]byte, []int) {
 	return fileDescriptor_030765f334c86cea, []int{1}
 }
-func (m *CreateResp) XXX_Unmarshal(b []byte) error {
+func (m *CreateUsersResp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CreateResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreateUsersResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CreateResp.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreateUsersResp.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -111,43 +111,43 @@ func (m *CreateResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *CreateResp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateResp.Merge(m, src)
+func (m *CreateUsersResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateUsersResp.Merge(m, src)
 }
-func (m *CreateResp) XXX_Size() int {
+func (m *CreateUsersResp) XXX_Size() int {
 	return m.Size()
 }
-func (m *CreateResp) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateResp.DiscardUnknown(m)
+func (m *CreateUsersResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateUsersResp.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateResp proto.InternalMessageInfo
+var xxx_messageInfo_CreateUsersResp proto.InternalMessageInfo
 
-func (m *CreateResp) GetData() *User {
+func (m *CreateUsersResp) GetData() *User {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-type ListWithBadgesReq struct {
+type ListUsersWithBadgesReq struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListWithBadgesReq) Reset()         { *m = ListWithBadgesReq{} }
-func (m *ListWithBadgesReq) String() string { return proto.CompactTextString(m) }
-func (*ListWithBadgesReq) ProtoMessage()    {}
-func (*ListWithBadgesReq) Descriptor() ([]byte, []int) {
+func (m *ListUsersWithBadgesReq) Reset()         { *m = ListUsersWithBadgesReq{} }
+func (m *ListUsersWithBadgesReq) String() string { return proto.CompactTextString(m) }
+func (*ListUsersWithBadgesReq) ProtoMessage()    {}
+func (*ListUsersWithBadgesReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_030765f334c86cea, []int{2}
 }
-func (m *ListWithBadgesReq) XXX_Unmarshal(b []byte) error {
+func (m *ListUsersWithBadgesReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ListWithBadgesReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ListUsersWithBadgesReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ListWithBadgesReq.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ListUsersWithBadgesReq.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -157,37 +157,37 @@ func (m *ListWithBadgesReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *ListWithBadgesReq) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListWithBadgesReq.Merge(m, src)
+func (m *ListUsersWithBadgesReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListUsersWithBadgesReq.Merge(m, src)
 }
-func (m *ListWithBadgesReq) XXX_Size() int {
+func (m *ListUsersWithBadgesReq) XXX_Size() int {
 	return m.Size()
 }
-func (m *ListWithBadgesReq) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListWithBadgesReq.DiscardUnknown(m)
+func (m *ListUsersWithBadgesReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListUsersWithBadgesReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListWithBadgesReq proto.InternalMessageInfo
+var xxx_messageInfo_ListUsersWithBadgesReq proto.InternalMessageInfo
 
-type ListWithBadgesResp struct {
+type ListUsersWithBadgesResp struct {
 	Data                 []*User  `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListWithBadgesResp) Reset()         { *m = ListWithBadgesResp{} }
-func (m *ListWithBadgesResp) String() string { return proto.CompactTextString(m) }
-func (*ListWithBadgesResp) ProtoMessage()    {}
-func (*ListWithBadgesResp) Descriptor() ([]byte, []int) {
+func (m *ListUsersWithBadgesResp) Reset()         { *m = ListUsersWithBadgesResp{} }
+func (m *ListUsersWithBadgesResp) String() string { return proto.CompactTextString(m) }
+func (*ListUsersWithBadgesResp) ProtoMessage()    {}
+func (*ListUsersWithBadgesResp) Descriptor() ([]byte, []int) {
 	return fileDescriptor_030765f334c86cea, []int{3}
 }
-func (m *ListWithBadgesResp) XXX_Unmarshal(b []byte) error {
+func (m *ListUsersWithBadgesResp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ListWithBadgesResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ListUsersWithBadgesResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ListWithBadgesResp.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ListUsersWithBadgesResp.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -197,19 +197,19 @@ func (m *ListWithBadgesResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *ListWithBadgesResp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListWithBadgesResp.Merge(m, src)
+func (m *ListUsersWithBadgesResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListUsersWithBadgesResp.Merge(m, src)
 }
-func (m *ListWithBadgesResp) XXX_Size() int {
+func (m *ListUsersWithBadgesResp) XXX_Size() int {
 	return m.Size()
 }
-func (m *ListWithBadgesResp) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListWithBadgesResp.DiscardUnknown(m)
+func (m *ListUsersWithBadgesResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListUsersWithBadgesResp.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListWithBadgesResp proto.InternalMessageInfo
+var xxx_messageInfo_ListUsersWithBadgesResp proto.InternalMessageInfo
 
-func (m *ListWithBadgesResp) GetData() []*User {
+func (m *ListUsersWithBadgesResp) GetData() []*User {
 	if m != nil {
 		return m.Data
 	}
@@ -288,41 +288,42 @@ func (m *User) GetBadges() []*v1.Badge {
 }
 
 func init() {
-	proto.RegisterType((*CreateReq)(nil), "users.v1.CreateReq")
-	proto.RegisterType((*CreateResp)(nil), "users.v1.CreateResp")
-	proto.RegisterType((*ListWithBadgesReq)(nil), "users.v1.ListWithBadgesReq")
-	proto.RegisterType((*ListWithBadgesResp)(nil), "users.v1.ListWithBadgesResp")
+	proto.RegisterType((*CreateUsersReq)(nil), "users.v1.CreateUsersReq")
+	proto.RegisterType((*CreateUsersResp)(nil), "users.v1.CreateUsersResp")
+	proto.RegisterType((*ListUsersWithBadgesReq)(nil), "users.v1.ListUsersWithBadgesReq")
+	proto.RegisterType((*ListUsersWithBadgesResp)(nil), "users.v1.ListUsersWithBadgesResp")
 	proto.RegisterType((*User)(nil), "users.v1.User")
 }
 
 func init() { proto.RegisterFile("users.proto", fileDescriptor_030765f334c86cea) }
 
 var fileDescriptor_030765f334c86cea = []byte{
-	// 375 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x52, 0xcf, 0x4e, 0xc2, 0x30,
-	0x18, 0xb7, 0x03, 0x16, 0x29, 0x09, 0xc6, 0x62, 0x74, 0x99, 0xb8, 0x98, 0x5e, 0x24, 0x1c, 0x36,
-	0x87, 0x17, 0xc3, 0xc5, 0x04, 0xaf, 0x9e, 0x66, 0x8c, 0x89, 0x17, 0x53, 0x58, 0x33, 0x9a, 0x8c,
-	0x75, 0xac, 0xdd, 0x0c, 0x57, 0x5f, 0xc1, 0x8b, 0x8f, 0xe4, 0xd1, 0x84, 0x17, 0x30, 0xe8, 0x83,
-	0x18, 0xba, 0x01, 0x4e, 0xc2, 0xf1, 0xeb, 0xef, 0xfb, 0x7e, 0xff, 0x36, 0xd8, 0x48, 0x05, 0x4d,
-	0x84, 0x1d, 0x27, 0x5c, 0x72, 0xb4, 0x9f, 0x0f, 0x99, 0x6b, 0xb6, 0x03, 0xce, 0x83, 0x90, 0x3a,
-	0x24, 0x66, 0x0e, 0x89, 0x22, 0x2e, 0x89, 0x64, 0x3c, 0x2a, 0xf6, 0x4c, 0x37, 0x60, 0x72, 0x9c,
-	0x0e, 0xed, 0x11, 0x9f, 0x38, 0x21, 0x13, 0x42, 0xd2, 0x84, 0x47, 0xce, 0x28, 0xe4, 0xa9, 0x2f,
-	0xd2, 0x68, 0xa6, 0xae, 0x32, 0xd7, 0x91, 0xb3, 0x98, 0x16, 0x27, 0xf8, 0x06, 0xd6, 0x6f, 0x13,
-	0x4a, 0x24, 0xf5, 0xe8, 0x14, 0x99, 0x50, 0x29, 0x45, 0x64, 0x42, 0x0d, 0x70, 0x0e, 0x3a, 0x75,
-	0x6f, 0x3d, 0xa3, 0x63, 0xa8, 0x93, 0x8c, 0x48, 0x92, 0x18, 0x9a, 0x42, 0x8a, 0x09, 0x5f, 0x42,
-	0xb8, 0x22, 0x10, 0x31, 0xc2, 0xb0, 0xea, 0x13, 0x49, 0xd4, 0x75, 0xa3, 0xd7, 0xb4, 0x57, 0xc6,
-	0xed, 0x07, 0x41, 0x13, 0x4f, 0x61, 0xb8, 0x05, 0x0f, 0xef, 0x98, 0x90, 0x8f, 0x4c, 0x8e, 0x07,
-	0xc4, 0x0f, 0xa8, 0xf0, 0xe8, 0x14, 0x5f, 0x43, 0xf4, 0xff, 0xb1, 0x44, 0x57, 0xd9, 0x49, 0x27,
-	0x60, 0x75, 0x39, 0xa1, 0x26, 0xd4, 0x98, 0x5f, 0xd8, 0xd6, 0x98, 0x5f, 0x0a, 0xa3, 0xed, 0x0c,
-	0x53, 0xf9, 0x1b, 0x06, 0x5d, 0x40, 0x7d, 0xa8, 0xd4, 0x8d, 0xaa, 0x52, 0x3c, 0xb0, 0xf3, 0xae,
-	0x32, 0xd7, 0x56, 0xae, 0xbc, 0x02, 0xee, 0xcd, 0x01, 0xac, 0x2d, 0x55, 0x05, 0xba, 0x87, 0x7a,
-	0x9e, 0x1f, 0xb5, 0x36, 0xf6, 0xd6, 0x95, 0x9a, 0x47, 0xdb, 0x8f, 0x22, 0xc6, 0xd6, 0xeb, 0xfc,
-	0xe7, 0x4d, 0x33, 0x70, 0x6b, 0xf5, 0x49, 0x96, 0x4b, 0xce, 0x48, 0x2d, 0xf4, 0x41, 0x17, 0xa5,
-	0xb0, 0x59, 0x6e, 0x03, 0x9d, 0x6e, 0x78, 0xb6, 0xca, 0x33, 0xdb, 0xbb, 0x41, 0x11, 0xe3, 0x8e,
-	0x12, 0xc3, 0xf8, 0xac, 0x24, 0x16, 0x32, 0x21, 0x9d, 0x17, 0x26, 0xc7, 0xcf, 0x79, 0xa4, 0x3e,
-	0xe8, 0x0e, 0x4e, 0x3e, 0x16, 0x16, 0xf8, 0x5c, 0x58, 0xe0, 0x6b, 0x61, 0x81, 0xf7, 0x6f, 0x6b,
-	0xef, 0xa9, 0xa6, 0x88, 0x87, 0xba, 0xfa, 0x59, 0xae, 0x7e, 0x03, 0x00, 0x00, 0xff, 0xff, 0xe0,
-	0xe8, 0xb5, 0x39, 0x96, 0x02, 0x00, 0x00,
+	// 385 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x52, 0xc1, 0x4a, 0xeb, 0x40,
+	0x14, 0x7d, 0x93, 0xb6, 0xe1, 0xbd, 0x29, 0xa4, 0x30, 0x0f, 0xda, 0xbc, 0xf0, 0x0c, 0x75, 0x36,
+	0x96, 0x2e, 0x12, 0x52, 0x71, 0x53, 0x70, 0x53, 0x5d, 0xba, 0x0a, 0x88, 0x20, 0x88, 0x4c, 0x9b,
+	0x21, 0x1d, 0x48, 0x33, 0x31, 0x33, 0x89, 0x74, 0x25, 0xf8, 0x0b, 0x6e, 0xfc, 0x24, 0x97, 0x82,
+	0x3f, 0x20, 0x55, 0xf0, 0x37, 0x24, 0x93, 0xd4, 0x1a, 0x68, 0x71, 0x79, 0x39, 0xe7, 0x9e, 0x73,
+	0xcf, 0x99, 0x81, 0xed, 0x4c, 0xd0, 0x54, 0x38, 0x49, 0xca, 0x25, 0x47, 0xbf, 0xcb, 0x21, 0xf7,
+	0xac, 0xff, 0x21, 0xe7, 0x61, 0x44, 0x5d, 0x92, 0x30, 0x97, 0xc4, 0x31, 0x97, 0x44, 0x32, 0x1e,
+	0x57, 0x3c, 0xcb, 0x0b, 0x99, 0x9c, 0x67, 0x53, 0x67, 0xc6, 0x17, 0x6e, 0xc4, 0x84, 0x90, 0x34,
+	0xe5, 0xb1, 0x3b, 0x8b, 0x78, 0x16, 0x88, 0x2c, 0x5e, 0xaa, 0xad, 0xdc, 0x73, 0xe5, 0x32, 0xa1,
+	0xd5, 0x0a, 0x3e, 0x85, 0xc6, 0x49, 0x4a, 0x89, 0xa4, 0xe7, 0x85, 0x85, 0x4f, 0x6f, 0x90, 0x05,
+	0x95, 0x5d, 0x4c, 0x16, 0xd4, 0x04, 0x7d, 0x30, 0xf8, 0xe3, 0x7f, 0xcd, 0xa8, 0x0b, 0x75, 0x92,
+	0x13, 0x49, 0x52, 0x53, 0x53, 0x48, 0x35, 0xe1, 0x23, 0xd8, 0xa9, 0xa9, 0x88, 0x04, 0x61, 0xd8,
+	0x0c, 0x88, 0x24, 0x4a, 0xa2, 0x3d, 0x32, 0x9c, 0x75, 0x04, 0xa7, 0xa0, 0xf8, 0x0a, 0xc3, 0x26,
+	0xec, 0x9e, 0x31, 0x21, 0xd5, 0xd2, 0x05, 0x93, 0xf3, 0x09, 0x09, 0x42, 0x5a, 0x1c, 0x81, 0x8f,
+	0x61, 0x6f, 0x2b, 0x52, 0x13, 0x6e, 0xec, 0x14, 0x16, 0xb0, 0x59, 0x4c, 0xc8, 0x80, 0x1a, 0x0b,
+	0xaa, 0x14, 0x1a, 0x0b, 0x6a, 0xd9, 0xb4, 0x9d, 0xd9, 0x1a, 0xdf, 0xb3, 0xa1, 0x03, 0xa8, 0x4f,
+	0x95, 0xbb, 0xd9, 0x54, 0x8e, 0x1d, 0xa7, 0xec, 0x2f, 0xf7, 0x1c, 0x75, 0x95, 0x5f, 0xc1, 0xa3,
+	0x0f, 0x00, 0x5b, 0xea, 0x60, 0x74, 0x05, 0xf5, 0xb2, 0x0e, 0x64, 0x6e, 0xce, 0xab, 0xd7, 0x6c,
+	0xfd, 0xdb, 0x81, 0x88, 0x04, 0xdb, 0xf7, 0x2f, 0xef, 0x0f, 0x9a, 0x89, 0xff, 0xae, 0x1f, 0xac,
+	0x60, 0xba, 0x33, 0xc5, 0x1a, 0x83, 0x21, 0xba, 0x83, 0x46, 0x51, 0xce, 0xa6, 0x17, 0xd4, 0xdf,
+	0x88, 0x6d, 0x2f, 0xd4, 0xda, 0xff, 0x81, 0x21, 0x12, 0x3c, 0x50, 0xb6, 0x18, 0xef, 0xd5, 0x6c,
+	0x23, 0x26, 0xa4, 0x7b, 0xcb, 0xe4, 0xfc, 0xba, 0x8c, 0x39, 0x06, 0xc3, 0x49, 0xef, 0x69, 0x65,
+	0x83, 0xe7, 0x95, 0x0d, 0x5e, 0x57, 0x36, 0x78, 0x7c, 0xb3, 0x7f, 0x5d, 0xb6, 0x94, 0xfa, 0x54,
+	0x57, 0x9f, 0xea, 0xf0, 0x33, 0x00, 0x00, 0xff, 0xff, 0xe9, 0xd5, 0x85, 0x4f, 0xbe, 0x02, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -337,8 +338,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type UsersClient interface {
-	Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error)
-	ListWithBadges(ctx context.Context, in *ListWithBadgesReq, opts ...grpc.CallOption) (*ListWithBadgesResp, error)
+	Create(ctx context.Context, in *CreateUsersReq, opts ...grpc.CallOption) (*CreateUsersResp, error)
+	ListWithBadges(ctx context.Context, in *ListUsersWithBadgesReq, opts ...grpc.CallOption) (*ListUsersWithBadgesResp, error)
 }
 
 type usersClient struct {
@@ -349,8 +350,8 @@ func NewUsersClient(cc *grpc.ClientConn) UsersClient {
 	return &usersClient{cc}
 }
 
-func (c *usersClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
-	out := new(CreateResp)
+func (c *usersClient) Create(ctx context.Context, in *CreateUsersReq, opts ...grpc.CallOption) (*CreateUsersResp, error) {
+	out := new(CreateUsersResp)
 	err := c.cc.Invoke(ctx, "/users.v1.Users/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -358,8 +359,8 @@ func (c *usersClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *usersClient) ListWithBadges(ctx context.Context, in *ListWithBadgesReq, opts ...grpc.CallOption) (*ListWithBadgesResp, error) {
-	out := new(ListWithBadgesResp)
+func (c *usersClient) ListWithBadges(ctx context.Context, in *ListUsersWithBadgesReq, opts ...grpc.CallOption) (*ListUsersWithBadgesResp, error) {
+	out := new(ListUsersWithBadgesResp)
 	err := c.cc.Invoke(ctx, "/users.v1.Users/ListWithBadges", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -369,18 +370,18 @@ func (c *usersClient) ListWithBadges(ctx context.Context, in *ListWithBadgesReq,
 
 // UsersServer is the server API for Users service.
 type UsersServer interface {
-	Create(context.Context, *CreateReq) (*CreateResp, error)
-	ListWithBadges(context.Context, *ListWithBadgesReq) (*ListWithBadgesResp, error)
+	Create(context.Context, *CreateUsersReq) (*CreateUsersResp, error)
+	ListWithBadges(context.Context, *ListUsersWithBadgesReq) (*ListUsersWithBadgesResp, error)
 }
 
 // UnimplementedUsersServer can be embedded to have forward compatible implementations.
 type UnimplementedUsersServer struct {
 }
 
-func (*UnimplementedUsersServer) Create(ctx context.Context, req *CreateReq) (*CreateResp, error) {
+func (*UnimplementedUsersServer) Create(ctx context.Context, req *CreateUsersReq) (*CreateUsersResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (*UnimplementedUsersServer) ListWithBadges(ctx context.Context, req *ListWithBadgesReq) (*ListWithBadgesResp, error) {
+func (*UnimplementedUsersServer) ListWithBadges(ctx context.Context, req *ListUsersWithBadgesReq) (*ListUsersWithBadgesResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListWithBadges not implemented")
 }
 
@@ -389,7 +390,7 @@ func RegisterUsersServer(s *grpc.Server, srv UsersServer) {
 }
 
 func _Users_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateReq)
+	in := new(CreateUsersReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -401,13 +402,13 @@ func _Users_Create_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/users.v1.Users/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).Create(ctx, req.(*CreateReq))
+		return srv.(UsersServer).Create(ctx, req.(*CreateUsersReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Users_ListWithBadges_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListWithBadgesReq)
+	in := new(ListUsersWithBadgesReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -419,7 +420,7 @@ func _Users_ListWithBadges_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/users.v1.Users/ListWithBadges",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ListWithBadges(ctx, req.(*ListWithBadgesReq))
+		return srv.(UsersServer).ListWithBadges(ctx, req.(*ListUsersWithBadgesReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -441,7 +442,7 @@ var _Users_serviceDesc = grpc.ServiceDesc{
 	Metadata: "users.proto",
 }
 
-func (m *CreateReq) Marshal() (dAtA []byte, err error) {
+func (m *CreateUsersReq) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -451,12 +452,12 @@ func (m *CreateReq) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CreateReq) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreateUsersReq) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CreateReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreateUsersReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -482,7 +483,7 @@ func (m *CreateReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CreateResp) Marshal() (dAtA []byte, err error) {
+func (m *CreateUsersResp) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -492,12 +493,12 @@ func (m *CreateResp) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CreateResp) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreateUsersResp) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CreateResp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreateUsersResp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -521,7 +522,7 @@ func (m *CreateResp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ListWithBadgesReq) Marshal() (dAtA []byte, err error) {
+func (m *ListUsersWithBadgesReq) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -531,12 +532,12 @@ func (m *ListWithBadgesReq) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ListWithBadgesReq) MarshalTo(dAtA []byte) (int, error) {
+func (m *ListUsersWithBadgesReq) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ListWithBadgesReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ListUsersWithBadgesReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -548,7 +549,7 @@ func (m *ListWithBadgesReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ListWithBadgesResp) Marshal() (dAtA []byte, err error) {
+func (m *ListUsersWithBadgesResp) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -558,12 +559,12 @@ func (m *ListWithBadgesResp) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ListWithBadgesResp) MarshalTo(dAtA []byte) (int, error) {
+func (m *ListUsersWithBadgesResp) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ListWithBadgesResp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ListUsersWithBadgesResp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -662,7 +663,7 @@ func encodeVarintUsers(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *CreateReq) Size() (n int) {
+func (m *CreateUsersReq) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -682,7 +683,7 @@ func (m *CreateReq) Size() (n int) {
 	return n
 }
 
-func (m *CreateResp) Size() (n int) {
+func (m *CreateUsersResp) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -698,7 +699,7 @@ func (m *CreateResp) Size() (n int) {
 	return n
 }
 
-func (m *ListWithBadgesReq) Size() (n int) {
+func (m *ListUsersWithBadgesReq) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -710,7 +711,7 @@ func (m *ListWithBadgesReq) Size() (n int) {
 	return n
 }
 
-func (m *ListWithBadgesResp) Size() (n int) {
+func (m *ListUsersWithBadgesResp) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -764,7 +765,7 @@ func sovUsers(x uint64) (n int) {
 func sozUsers(x uint64) (n int) {
 	return sovUsers(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *CreateReq) Unmarshal(dAtA []byte) error {
+func (m *CreateUsersReq) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -787,10 +788,10 @@ func (m *CreateReq) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CreateReq: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreateUsersReq: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateReq: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreateUsersReq: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -882,7 +883,7 @@ func (m *CreateReq) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CreateResp) Unmarshal(dAtA []byte) error {
+func (m *CreateUsersResp) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -905,10 +906,10 @@ func (m *CreateResp) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CreateResp: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreateUsersResp: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateResp: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreateUsersResp: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -972,7 +973,7 @@ func (m *CreateResp) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ListWithBadgesReq) Unmarshal(dAtA []byte) error {
+func (m *ListUsersWithBadgesReq) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -995,10 +996,10 @@ func (m *ListWithBadgesReq) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ListWithBadgesReq: wiretype end group for non-group")
+			return fmt.Errorf("proto: ListUsersWithBadgesReq: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ListWithBadgesReq: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ListUsersWithBadgesReq: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1026,7 +1027,7 @@ func (m *ListWithBadgesReq) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ListWithBadgesResp) Unmarshal(dAtA []byte) error {
+func (m *ListUsersWithBadgesResp) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1049,10 +1050,10 @@ func (m *ListWithBadgesResp) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ListWithBadgesResp: wiretype end group for non-group")
+			return fmt.Errorf("proto: ListUsersWithBadgesResp: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ListWithBadgesResp: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ListUsersWithBadgesResp: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

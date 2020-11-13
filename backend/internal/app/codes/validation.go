@@ -7,12 +7,10 @@ import (
 	"google.golang.org/grpc/codes"
 )
 
-const validation = 200_000
-
 type Validation int
 
 func (s Validation) Int() int {
-	return int(s) + validation
+	return int(s)
 }
 
 func (s Validation) GRPC() int {
@@ -28,12 +26,12 @@ func (s Validation) String() string {
 }
 
 const (
-	ValidationErr Validation = iota + 1
-	ValidUserUsernameRequired
-	ValidUserAvatarRequired
-	ValidBadgeIDRequired
-	ValidBadgeUserIDRequired
-	ValidBadgeTypeRequired
-	ValidBadgeTypeIn
-	ValidImageFormatIn
+	ValidationErr             Validation = 200_000
+	ValidUserUsernameRequired Validation = 200_001
+	ValidUserAvatarRequired   Validation = 200_002
+	ValidBadgeIDRequired      Validation = 200_003
+	ValidBadgeUserIDRequired  Validation = 200_004
+	ValidBadgeTypeRequired    Validation = 200_005
+	ValidBadgeTypeIn          Validation = 200_006
+	ValidImageFormatIn        Validation = 200_007
 )

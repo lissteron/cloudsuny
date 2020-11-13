@@ -7,13 +7,13 @@ package users.v1;
 option go_package = "users";
 
 service Users {
-  rpc Create (CreateReq) returns (CreateResp) {
+  rpc Create (CreateUsersReq) returns (CreateUsersResp) {
     option (google.api.http) = {
       post: "/api/v1/user/create"
       body: "*"
     };
   }
-  rpc ListWithBadges (ListWithBadgesReq) returns (ListWithBadgesResp) {
+  rpc ListWithBadges (ListUsersWithBadgesReq) returns (ListUsersWithBadgesResp) {
     option (google.api.http) = {
       post: "/api/v1/user/list/with_badges"
       body: "*"
@@ -21,18 +21,18 @@ service Users {
   }
 }
 
-message CreateReq {
+message CreateUsersReq {
   string username = 1 [json_name = "username"];
   string avatar = 2   [json_name = "avatar"];
 }
 
-message CreateResp {
+message CreateUsersResp {
   User data = 1 [json_name = "data"];
 }
 
-message ListWithBadgesReq {}
+message ListUsersWithBadgesReq {}
 
-message ListWithBadgesResp {
+message ListUsersWithBadgesResp {
   repeated User data = 1 [json_name = "data"];
 }
 
