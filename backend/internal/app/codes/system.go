@@ -6,13 +6,11 @@ import (
 	"google.golang.org/grpc/codes"
 )
 
-const system = 1000
-
 // Validation error codes
 type System int
 
 func (s System) Int() int {
-	return int(s) + system
+	return int(s)
 }
 
 func (s System) GRPC() int {
@@ -24,6 +22,6 @@ func (s System) HTTP() int {
 }
 
 const (
-	DatabaseError System = iota + 1
-	SystemError
+	DatabaseError System = 1000
+	SystemError   System = 1001
 )

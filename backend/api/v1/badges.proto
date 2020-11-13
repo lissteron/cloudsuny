@@ -7,13 +7,13 @@ package badges.v1;
 option go_package = "badges";
 
 service Badges {
-  rpc Create (CreateReq) returns (CreateResp) {
+  rpc Create (CreateBadgesReq) returns (CreateBadgesResp) {
     option (google.api.http) = {
       post: "/api/v1/badge/create"
       body: "*"
     };
   }
-  rpc Update (UpdateReq) returns (UpdateResp) {
+  rpc Update (UpdateBadgesReq) returns (UpdateBadgesResp) {
     option (google.api.http) = {
       post: "/api/v1/badge/update"
       body: "*"
@@ -21,21 +21,22 @@ service Badges {
   }
 }
 
-message CreateReq {
+message CreateBadgesReq {
   string user_id = 1       [json_name = "user_id"];
   string type = 2          [json_name = "type"];
   types.v1.Point point = 3 [json_name = "point"];
 }
 
-message CreateResp {
+message CreateBadgesResp {
   types.v1.Badge data = 1 [json_name = "data"];
 }
 
-message UpdateReq {
+message UpdateBadgesReq {
   string id = 1            [json_name = "id"];
   types.v1.Point point = 2 [json_name = "point"];
 }
 
-message UpdateResp {
+message UpdateBadgesResp {
   types.v1.Badge data = 1 [json_name = "data"];
 }
+

@@ -12,8 +12,8 @@ import (
 
 func (i *Implementation) Create(
 	ctx context.Context,
-	req *desc.CreateReq,
-) (resp *desc.CreateResp, err error) {
+	req *desc.CreateBadgesReq,
+) (resp *desc.CreateBadgesResp, err error) {
 	if err := req.Validate(); err != nil {
 		i.logger.Warnf(ctx,"validate create badge request failed: %v", err)
 
@@ -27,7 +27,7 @@ func (i *Implementation) Create(
 		return nil, err
 	}
 
-	resp = &desc.CreateResp{
+	resp = &desc.CreateBadgesResp{
 		Data: types.BadgeFromDomain(result),
 	}
 

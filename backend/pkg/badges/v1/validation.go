@@ -8,7 +8,7 @@ import (
 	"github.com/lissteron/cloudsuny/internal/app/domain"
 )
 
-func (m *CreateReq) Validate() error {
+func (m *CreateBadgesReq) Validate() error {
 	err := validation.ValidateStruct(m,
 		validation.Field(&m.UserId, m.userIDRules()...),
 		validation.Field(&m.Type, m.typeRules()...),
@@ -20,26 +20,26 @@ func (m *CreateReq) Validate() error {
 	return nil
 }
 
-func (m *CreateReq) userIDRules() []validation.Rule {
+func (m *CreateBadgesReq) userIDRules() []validation.Rule {
 	return []validation.Rule{
 		validation.Required.ErrorCode(codes.ValidBadgeUserIDRequired.String()),
 	}
 }
 
-func (m *CreateReq) typeRules() []validation.Rule {
+func (m *CreateBadgesReq) typeRules() []validation.Rule {
 	return []validation.Rule{
 		validation.Required.ErrorCode(codes.ValidBadgeTypeRequired.String()),
-		validation.In(domain.CloudBadge, domain.SunBadge).ErrorCode(codes.ValidBadgeTypeIn.String()),
+		validation.In(domain.CloudBadge, domain.SunBadge, domain.IndianBadge).ErrorCode(codes.ValidBadgeTypeIn.String()),
 	}
 }
 
-func (m *UpdateReq) Validate() error {
+func (m *UpdateBadgesReq) Validate() error {
 	return validation.ValidateStruct(m,
 		validation.Field(&m.Id, m.idRules()...),
 	)
 }
 
-func (m *UpdateReq) idRules() []validation.Rule {
+func (m *UpdateBadgesReq) idRules() []validation.Rule {
 	return []validation.Rule{
 		validation.Required.ErrorCode(codes.ValidBadgeIDRequired.String()),
 	}

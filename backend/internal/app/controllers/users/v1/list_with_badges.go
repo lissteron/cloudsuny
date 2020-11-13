@@ -11,8 +11,8 @@ import (
 
 func (i *Implementation) ListWithBadges(
 	ctx context.Context,
-	req *desc.ListWithBadgesReq,
-) (resp *desc.ListWithBadgesResp, err error) {
+	req *desc.ListUsersWithBadgesReq,
+) (resp *desc.ListUsersWithBadgesResp, err error) {
 	result, err := i.list.Do(ctx)
 	if err != nil {
 		i.logger.Errorf(ctx,"list users with badges failed: %v", err)
@@ -20,7 +20,7 @@ func (i *Implementation) ListWithBadges(
 		return nil, err
 	}
 
-	resp = &desc.ListWithBadgesResp{
+	resp = &desc.ListUsersWithBadgesResp{
 		Data: make([]*desc.User, 0, len(result)),
 	}
 

@@ -214,7 +214,7 @@ func NewUsersHTTPClient(c *http.Client, addr string) *Users_httpClient {
 	return &Users_httpClient{c: c, host: addr}
 }
 
-func (c *Users_httpClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
+func (c *Users_httpClient) Create(ctx context.Context, in *CreateUsersReq, opts ...grpc.CallOption) (*CreateUsersResp, error) {
 	mw, err := httpclient.NewMiddlewareGRPC(opts)
 	if err != nil {
 		return nil, err
@@ -258,14 +258,14 @@ func (c *Users_httpClient) Create(ctx context.Context, in *CreateReq, opts ...gr
 		return nil, errors.Errorf("%v %v: server returned HTTP %v: '%v'", req.Method, req.URL.String(), rsp.StatusCode, string(b))
 	}
 
-	ret := CreateResp{}
+	ret := CreateUsersResp{}
 
 	err = m.Unmarshal(rsp.Body, &ret)
 
 	return &ret, errors.Wrap(err, "can't unmarshal response")
 }
 
-func (c *Users_httpClient) ListWithBadges(ctx context.Context, in *ListWithBadgesReq, opts ...grpc.CallOption) (*ListWithBadgesResp, error) {
+func (c *Users_httpClient) ListWithBadges(ctx context.Context, in *ListUsersWithBadgesReq, opts ...grpc.CallOption) (*ListUsersWithBadgesResp, error) {
 	mw, err := httpclient.NewMiddlewareGRPC(opts)
 	if err != nil {
 		return nil, err
@@ -309,7 +309,7 @@ func (c *Users_httpClient) ListWithBadges(ctx context.Context, in *ListWithBadge
 		return nil, errors.Errorf("%v %v: server returned HTTP %v: '%v'", req.Method, req.URL.String(), rsp.StatusCode, string(b))
 	}
 
-	ret := ListWithBadgesResp{}
+	ret := ListUsersWithBadgesResp{}
 
 	err = m.Unmarshal(rsp.Body, &ret)
 
@@ -320,7 +320,7 @@ func (c *Users_httpClient) ListWithBadges(ctx context.Context, in *ListWithBadge
 var (
 	pattern_goclay_Users_Create_0 = "/api/v1/user/create"
 
-	pattern_goclay_Users_Create_0_builder = func(in *CreateReq) string {
+	pattern_goclay_Users_Create_0_builder = func(in *CreateUsersReq) string {
 		values := url.Values{}
 
 		u := url.URL{
@@ -334,7 +334,7 @@ var (
 
 	pattern_goclay_Users_ListWithBadges_0 = "/api/v1/user/list/with_badges"
 
-	pattern_goclay_Users_ListWithBadges_0_builder = func(in *ListWithBadgesReq) string {
+	pattern_goclay_Users_ListWithBadges_0_builder = func(in *ListUsersWithBadgesReq) string {
 		values := url.Values{}
 
 		u := url.URL{
@@ -351,7 +351,7 @@ var (
 var (
 	unmarshaler_goclay_Users_Create_0 = func(r *http.Request) func(interface{}) error {
 		return func(rif interface{}) error {
-			req := rif.(*CreateReq)
+			req := rif.(*CreateUsersReq)
 
 			if err := errors.Wrap(runtime.PopulateQueryParameters(req, r.URL.Query(), unmarshaler_goclay_Users_Create_0_boundParams), "couldn't populate query parameters"); err != nil {
 				return httpruntime.TransformUnmarshalerError(err)
@@ -367,7 +367,7 @@ var (
 
 	unmarshaler_goclay_Users_ListWithBadges_0 = func(r *http.Request) func(interface{}) error {
 		return func(rif interface{}) error {
-			req := rif.(*ListWithBadgesReq)
+			req := rif.(*ListUsersWithBadgesReq)
 
 			if err := errors.Wrap(runtime.PopulateQueryParameters(req, r.URL.Query(), unmarshaler_goclay_Users_ListWithBadges_0_boundParams), "couldn't populate query parameters"); err != nil {
 				return httpruntime.TransformUnmarshalerError(err)
@@ -402,7 +402,7 @@ var _swaggerDef_users_proto = []byte(`{
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateResp"
+              "$ref": "#/definitions/v1CreateUsersResp"
             }
           }
         },
@@ -412,7 +412,7 @@ var _swaggerDef_users_proto = []byte(`{
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateReq"
+              "$ref": "#/definitions/v1CreateUsersReq"
             }
           }
         ],
@@ -428,7 +428,7 @@ var _swaggerDef_users_proto = []byte(`{
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ListWithBadgesResp"
+              "$ref": "#/definitions/v1ListUsersWithBadgesResp"
             }
           }
         },
@@ -438,7 +438,7 @@ var _swaggerDef_users_proto = []byte(`{
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1ListWithBadgesReq"
+              "$ref": "#/definitions/v1ListUsersWithBadgesReq"
             }
           }
         ],
@@ -470,7 +470,7 @@ var _swaggerDef_users_proto = []byte(`{
         }
       }
     },
-    "v1CreateReq": {
+    "v1CreateUsersReq": {
       "type": "object",
       "properties": {
         "username": {
@@ -481,7 +481,7 @@ var _swaggerDef_users_proto = []byte(`{
         }
       }
     },
-    "v1CreateResp": {
+    "v1CreateUsersResp": {
       "type": "object",
       "properties": {
         "data": {
@@ -489,10 +489,10 @@ var _swaggerDef_users_proto = []byte(`{
         }
       }
     },
-    "v1ListWithBadgesReq": {
+    "v1ListUsersWithBadgesReq": {
       "type": "object"
     },
-    "v1ListWithBadgesResp": {
+    "v1ListUsersWithBadgesResp": {
       "type": "object",
       "properties": {
         "data": {

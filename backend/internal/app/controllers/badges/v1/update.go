@@ -12,8 +12,8 @@ import (
 
 func (i *Implementation) Update(
 	ctx context.Context,
-	req *desc.UpdateReq,
-) (resp *desc.UpdateResp, err error) {
+	req *desc.UpdateBadgesReq,
+) (resp *desc.UpdateBadgesResp, err error) {
 	if err := req.Validate(); err != nil {
 		i.logger.Warnf(ctx,"validate update badge request failed: %v", err)
 
@@ -27,7 +27,7 @@ func (i *Implementation) Update(
 		return nil, err
 	}
 
-	resp = &desc.UpdateResp{
+	resp = &desc.UpdateBadgesResp{
 		Data: types.BadgeFromDomain(result),
 	}
 
