@@ -19,7 +19,7 @@ func UserFromDomain(user *domain.User) *User {
 	return output
 }
 
-func (m *CreateUsersReq) ToDomain() *domain.User {
+func (m *CreateReq) ToDomain() *domain.User {
 	return &domain.User{
 		Username: m.Username,
 		Avatar:   m.Avatar,

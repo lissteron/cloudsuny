@@ -47,8 +47,8 @@ func main() {
 
 	// Init handlers.
 	var (
-		badgesV1Handler = badgesV1.NewBadges(badgeCreate, badgeUpdate, app.TraceLogger())
-		usersV1Handler  = usersV1.NewUsers(userCreate, userList, app.TraceLogger())
+		badgesV1Handler = badgesV1.NewImplementation(badgeCreate, badgeUpdate, app.TraceLogger())
+		usersV1Handler  = usersV1.NewImplementation(userCreate, userList, app.TraceLogger())
 		imageHandlers   = httpV1.NewImagesHandlers(imageService, app.TraceLogger())
 	)
 
