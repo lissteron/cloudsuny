@@ -1,12 +1,13 @@
 package types
 
 import (
+	"github.com/gogo/protobuf/types"
+
 	"github.com/lissteron/cloudsuny/internal/app/domain"
-	"github.com/lissteron/cloudsuny/pkg/prototime"
 )
 
 func BadgeFromDomain(input *domain.Badge) *Badge {
-	return &Badge{
+	badge := &Badge{
 		Id:     input.ID,
 		UserId: input.UserID,
 		Type:   input.Type,
@@ -14,6 +15,9 @@ func BadgeFromDomain(input *domain.Badge) *Badge {
 			X: input.Point.X,
 			Y: input.Point.Y,
 		},
-		CreatedAt: prototime.TimeToProto(input.CreatedAt),
 	}
+
+	badge.CreatedAt, _ = types.TimestampProto(input.CreatedAt)
+
+	return badge
 }
