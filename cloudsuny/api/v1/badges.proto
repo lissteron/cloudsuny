@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "github.com/lissteron/cloudsuny/api/v1/types.proto";
+
+package badges.v1;
+option go_package = ".;badges";
+
+service Badges {
+  rpc Create (CreateReq) returns (CreateResp) {
+    option (google.api.http) = {
+      post: "/api/v1/badge/create"
+      body: "*"
+    };
+  }
+  rpc Update (UpdateReq) returns (UpdateResp) {
+    option (google.api.http) = {
+      post: "/api/v1/badge/update"
+      body: "*"
+    };
+  }
+}
+
+message CreateReq {
+  string user_id = 1       [json_name = "user_id"];
+  string type = 2          [json_name = "type"];
+  types.v1.Point point = 3 [json_name = "point"];
+}
+
+message CreateResp {
+  types.v1.Badge data = 1 [json_name = "data"];
+}
+
+message UpdateReq {
+  string id = 1            [json_name = "id"];
+  types.v1.Point point = 2 [json_name = "point"];
+}
+
+message UpdateResp {
+  types.v1.Badge data = 1 [json_name = "data"];
+}
+

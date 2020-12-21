@@ -3,7 +3,7 @@ services:
   cloudsuny-backend:
     image: golang:1.15-alpine
     volumes:
-      - ./backend/:/app
+      - ./cloudsuny/:/app
       - ./data/db/:/db/
       - ./.git:/app/.git
       - ./data/images/:/images/

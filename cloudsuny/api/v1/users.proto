@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "github.com/lissteron/cloudsuny/api/v1/types.proto";
+
+package users.v1;
+option go_package = ".;users";
+
+service Users {
+  rpc Create (CreateReq) returns (CreateResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/create"
+      body: "*"
+    };
+  }
+  rpc ListWithBadges (ListWithBadgesReq) returns (ListWithBadgesResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/list/with_badges"
+      body: "*"
+    };
+  }
+  rpc Delete (DeleteReq) returns (DeleteResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/delete"
+      body: "*"
+    };
+  }
+}
+
+message CreateReq {
+  string username = 1 [json_name = "username"];
+  string avatar = 2   [json_name = "avatar"];
+}
+
+message CreateResp {
+  User data = 1 [json_name = "data"];
+}
+
+message ListWithBadgesReq {
+  uint64 limit = 1  [json_name = "limit"];
+  uint64 offset = 2 [json_name = "offset"];
+}
+
+message ListWithBadgesResp {
+  repeated User data = 1 [json_name = "data"];
+  int64 total = 2        [json_name = "total"];
+  int64 count = 3        [json_name = "count"];
+  int64 skipped = 4      [json_name = "skipped"];
+}
+
+message User {
+  string id = 1                      [json_name = "id"];
+  string username = 2                [json_name = "username"];
+  string avatar = 3                  [json_name = "avatar"];
+  repeated types.v1.Badge badges = 4 [json_name = "badges"];
+}
+
+message DeleteReq {
+  string user_id = 1 [json_name = "user_id"];
+}
+
+message DeleteResp {}

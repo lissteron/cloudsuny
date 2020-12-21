@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "github.com/gadavy/pb-types/timestamp.proto";
+
+package types.v1;
+option go_package = ".;types";
+
+message Point {
+  double x = 1 [json_name = "x"];
+  double y = 2 [json_name = "y"];
+}
+
+message Badge {
+  string id = 1                            [json_name = "id"];
+  string user_id = 2                       [json_name = "user_id"];
+  string type = 3                          [json_name = "type"];
+  Point point = 4                          [json_name = "point"];
+  google.protobuf.Timestamp created_at = 5 [json_name = "created_at"];
+}
