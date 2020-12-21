@@ -23,6 +23,13 @@ func Migrate(db *database.DB) error {
 			CONSTRAINT fk_badge_ref_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE RESTRICT ON UPDATE CASCADE
 		);`,
 		`CREATE UNIQUE INDEX IF NOT EXISTS user_username_key ON "user"(username);`,
+		`CREATE TABLE IF NOT EXISTS "sessions" (
+			token TEXT NOT NULL PRIMARY KEY,
+			login TEXT NOT NULL,
+			created_at TIMESTAMP NOT NULL,
+			updated_at TIMESTAMP NOT NULL
+		);`,
+		`CREATE INDEX IF NOT EXISTS sessions_login_idx ON "sessions"(login);`,
 	}
 
 	for _, query := range migrations {

@@ -17,6 +17,8 @@ const (
 	ValidImageFormatIn        Validation = 200_007
 	ValidUserIDRequired       Validation = 200_008
 	ValidLimitMax             Validation = 200_009
+	ValidLoginRequired        Validation = 200_010
+	ValidPasswordRequired     Validation = 200_011
 )
 
 type Validation int

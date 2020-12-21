@@ -1,2 +1,4 @@
 # Place config values for LOCAL development here
 DATABASE_PATH: ../data/db/database.db
+IMAGES_PATH: ../data/images
+SESSION_MAX_AGE: 60s

@@ -31,9 +31,9 @@ type Point struct {
 }
 
 type Image struct {
-	Bytes  []byte
-	Format string
-	Name   string
+	Bytes  []byte `json:"-"`
+	Format string `json:"format"`
+	Name   string `json:"name"`
 }
 
 type UserListResult struct {

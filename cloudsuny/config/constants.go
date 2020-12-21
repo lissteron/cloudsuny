@@ -2,6 +2,9 @@
 package config
 
 const (
-	DatabasePath = "database_path"
-	ImagesPath   = "images_path"
+	Credentials   = "credentials"
+	DatabasePath  = "database_path"
+	ImagesPath    = "images_path"
+	SessionMaxAge = "session_max_age"
+	User1         = "user-1"
 )

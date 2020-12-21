@@ -9,3 +9,6 @@ SERVICE_PORT_ADMIN: 8082
 # Place default config values here
 IMAGES_PATH: /images
 DATABASE_PATH: /db/database.db
+SESSION_MAX_AGE: 162h
+CREDENTIALS:
+  user-1: password-1

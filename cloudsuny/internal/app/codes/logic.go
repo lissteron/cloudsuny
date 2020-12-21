@@ -7,9 +7,12 @@ import (
 )
 
 const (
-	UserNotFound      Logic = 2000
-	UserAlreadyExists Logic = 2001
-	BadgeNotFound     Logic = 2002
+	UserNotFound              Logic = 2000
+	UserAlreadyExists         Logic = 2001
+	BadgeNotFound             Logic = 2002
+	InvalidUsernameOrPassword Logic = 2003
+	SessionNotFound           Logic = 2004
+	SessionExpired            Logic = 2005
 )
 
 type Logic int
@@ -24,9 +27,11 @@ func (s Logic) GRPC() int {
 		return int(codes.NotFound)
 	case UserAlreadyExists:
 		return int(codes.AlreadyExists)
+	case InvalidUsernameOrPassword, SessionNotFound, SessionExpired:
+		return int(codes.Unauthenticated)
+	default:
+		return int(codes.Unknown)
 	}
-
-	return int(codes.Unknown)
 }
 
 func (s Logic) HTTP() int {
@@ -35,7 +40,9 @@ func (s Logic) HTTP() int {
 		return http.StatusNotFound
 	case UserAlreadyExists:
 		return http.StatusConflict
+	case InvalidUsernameOrPassword, SessionNotFound, SessionExpired:
+		return http.StatusUnauthorized
+	default:
+		return http.StatusInternalServerError
 	}
-
-	return http.StatusInternalServerError
 }

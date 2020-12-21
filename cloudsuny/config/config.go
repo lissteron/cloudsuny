@@ -2,6 +2,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/loghole/database"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
@@ -13,7 +15,15 @@ func ImgPath() string {
 
 func SQLiteConfig() *database.Config {
 	return &database.Config{
-		Database:     viper.GetString(DatabasePath),
-		Type:         database.SQLiteDatabase,
+		Database: viper.GetString(DatabasePath),
+		Type:     database.SQLiteDatabase,
 	}
+}
+
+func UserCredentials() map[string]string {
+	return viper.GetStringMapString(Credentials)
+}
+
+func GetSessionMaxAge() time.Duration {
+	return viper.GetDuration(SessionMaxAge)
 }
