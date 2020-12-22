@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+package auth.v1;
+option go_package = ".;auth";
+
+// Устанавливает сессионный cookie, необходимы для доступа к следующим админским методам:
+//  /api/v1/badge/create
+//  /api/v1/badge/update
+//  /api/v1/user/create
+//  /api/v1/user/delete
+//  /api/v1/image/upload
+//  /api/v1/auth/sign_out
+//
+// Во всех случаях, если был передан cookie и
+// он валиден - устанавливается header 'X-Admin=true'
+service Authentication {
+  // Устанавливает клиенту сессионный cookie с помощью которого можно получить доступ к дополнительным методам.
+  rpc SignIn(SignInReq) returns (SignInResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/sign_in"
+      body: "*"
+    };
+  };
+
+  // Выходит из текущей сессии если она валидна. Сессия удаляется как на стороне клиента, так и в БД.
+  rpc SignOut(SignOutReq) returns (SignOutResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/sign_out"
+      body: "*"
+    };
+  };
+}
+
+message SignInReq {
+  string login = 1;
+  string password = 2;
+}
+
+message SignInResp {}
+
+message SignOutReq {}
+
+message SignOutResp {}
