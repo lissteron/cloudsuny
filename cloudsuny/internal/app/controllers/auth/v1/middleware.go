@@ -19,7 +19,7 @@ func (i *Implementation) Middleware(next http.Handler) http.Handler {
 		// Проверяем сессию на всех запросах, если сессия протухла - сразу удаляем куку, т.к. в базе ее больше нет.
 		session, err := i.service.Authenticate(r.Context(), i.readHTTPCookie(r))
 		if err != nil {
-			http.SetCookie(w, i.cookie("", true))
+			http.SetCookie(w, cookie("", domainName(r.Context()), true))
 		}
 
 		// Если пользователь авторизован, устанавливаем данный хедер для UI, что бы там можно было это понять.
