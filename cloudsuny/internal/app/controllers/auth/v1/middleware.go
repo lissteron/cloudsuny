@@ -16,10 +16,12 @@ func (i *Implementation) Middleware(next http.Handler) http.Handler {
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cookieValue, exists := i.readHTTPCookie(r)
+
 		// Проверяем сессию на всех запросах, если сессия протухла - сразу удаляем куку, т.к. в базе ее больше нет.
-		session, err := i.service.Authenticate(r.Context(), i.readHTTPCookie(r))
-		if err != nil {
-			http.SetCookie(w, cookie("", domainName(r.Context()), true))
+		session, err := i.service.Authenticate(r.Context(), cookieValue)
+		if err != nil && exists {
+			http.SetCookie(w, cookie("", true))
 		}
 
 		// Если пользователь авторизован, устанавливаем данный хедер для UI, что бы там можно было это понять.

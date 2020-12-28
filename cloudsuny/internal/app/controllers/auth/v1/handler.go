@@ -3,7 +3,6 @@ package auth
 
 import (
 	"context"
-	"net"
 	"net/http"
 	"strings"
 
@@ -19,12 +18,11 @@ import (
 )
 
 const (
-	cookieName    = "_sess_1"
-	cookieHeader  = "cookie"
-	headerParts   = 2
-	headerSep     = "="
-	setCookie     = "Set-Cookie"
-	xForwardedFor = "X-Forwarded-For"
+	cookieName   = "_sx"
+	cookieHeader = "cookie"
+	headerParts  = 2
+	headerSep    = "="
+	setCookie    = "Set-Cookie"
 )
 
 type Service interface {
@@ -72,17 +70,17 @@ func (i *Implementation) readGRPCCookie(ctx context.Context) string {
 	return ""
 }
 
-func (i *Implementation) readHTTPCookie(r *http.Request) string {
+func (i *Implementation) readHTTPCookie(r *http.Request) (string, bool) {
 	cookie, err := r.Cookie(cookieName)
 	if err != nil {
-		return ""
+		return "", false
 	}
 
-	return cookie.Value
+	return cookie.Value, true
 }
 
 func (i *Implementation) setGRPCCookie(ctx context.Context, value string, drop bool) error {
-	cookie := cookie(value, domainName(ctx), drop)
+	cookie := cookie(value, drop)
 
 	err := grpc.SetHeader(ctx, metadata.New(map[string]string{setCookie: cookie.String()}))
 	if err != nil {
@@ -92,13 +90,12 @@ func (i *Implementation) setGRPCCookie(ctx context.Context, value string, drop b
 	return nil
 }
 
-func cookie(value, domainName string, drop bool) *http.Cookie {
+func cookie(value string, drop bool) *http.Cookie {
 	cookie := &http.Cookie{
 		Name:     cookieName,
 		Value:    value,
 		HttpOnly: true,
 		Path:     "/",
-		Domain:   domainName,
 		SameSite: http.SameSiteLaxMode,
 	}
 
@@ -107,23 +104,4 @@ func cookie(value, domainName string, drop bool) *http.Cookie {
 	}
 
 	return cookie
-}
-
-func domainName(ctx context.Context) (name string) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return ""
-	}
-
-	values := md.Get(xForwardedFor)
-	if len(values) == 0 {
-		return ""
-	}
-
-	host, _, err := net.SplitHostPort(values[0])
-	if err != nil {
-		return ""
-	}
-
-	return host
 }
