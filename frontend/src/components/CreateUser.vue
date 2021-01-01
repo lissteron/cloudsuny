@@ -14,7 +14,7 @@ import axios from 'axios';
 // console.log(obj);
 export default {
   props: {
-    adress: {
+    adress: { // TODO: убрать, больше он не нужен.
       type: String,
       required: true,
     },
@@ -35,7 +35,7 @@ export default {
   methods: {
     createUser() {
       axios
-        .post(`${this.adress}/api/v1/user/create`, {
+        .post('/api/v1/user/create', {
           username: this.username,
           avatar: this.avatar,
         })

@@ -23,7 +23,7 @@ export default {
       type: String,
       required: true,
     },
-    adress: {
+    adress: { // TODO: убрать, больше он не нужен.
       type: String,
       required: true,
     },
@@ -42,7 +42,7 @@ export default {
   methods: {
     createBage() {
       axios
-        .post(`${this.adress}/api/v1/badge/create`, {
+        .post('/api/v1/badge/create', {
           point: {
             x: 0,
             y: 0,

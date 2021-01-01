@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export default {
   props: {
-    adress: {
+    adress: { // TODO: убрать, больше он не нужен.
       type: String,
       required: true,
     },
@@ -23,7 +23,7 @@ export default {
   methods: {
     updateUser() {
       axios
-        .post(`${this.adres}/api/v1/user/list/with_badges`, {})
+        .post('/api/v1/user/list/with_badges', {})
         .then((response) => {
           this.info = response;
         })

@@ -5,6 +5,7 @@ services:
     volumes:
       - ./cloudsuny/:/app
       - ./data/db/:/db/
+      - ./data/images/:/images/
       - ./.git:/app/.git
       - go-build-cache:/root/.cache/go-build
     working_dir: /app

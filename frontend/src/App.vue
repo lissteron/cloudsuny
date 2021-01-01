@@ -1,24 +1,28 @@
 <template>
   <div id="app">
     <login v-if="lgvisible" @close="lgvisible=!lgvisible"/>
-    <button @click="lgvisible=!lgvisible">Login</button>
-    <button @click="deleteAll">del</button>
-    <modal-win :adress="adress" @update='updateWin' @close="showModal" v-if="visible"/>
+    <div class="header">
+        <svg class="header__logo">
+          <text x="0" y="50">
+            <tspan fill="#55D1E7">cloud</tspan>
+            <tspan fill="#FECE85">suny</tspan>
+          </text>
+        </svg>
+
+        <a @click="lgvisible=!lgvisible" class="header__button">Login</a>
+    </div>
+
+    <!-- <button @click="deleteAll">del</button> -->
+    <modal-win @update='updateWin' @close="showModal" v-if="visible"/>
+
     <div class="display-card">
       <drow-cards
         v-for="card in cardMass"
         :key="card.id"
         :card="card"
-        :adress="adress"
         class="card"
       />
     </div>
-
-    <!-- <img alt="Vue logo" src="./assets/logo.png" />
-    <create-user :adress="adress" @returnId="newValue" msg="Welcome to Your Vue.js App" />
-    <create-bage :id="id" :adress="adress"/>
-    <update-users :adress="adress"/> -->
-    <!-- отображаем тут компонент, для которого совпадает маршрут -->
   </div>
 </template>
 <script>
@@ -26,7 +30,6 @@ import axios from 'axios';
 import DrowCards from './components/DrawCards.vue';
 import ModalWin from './components/ModalInitCard.vue';
 import Login from './components/LoginWin.vue';
-import obj from '../public/config/http';
 
 export default {
   name: 'App',
@@ -38,7 +41,6 @@ export default {
   data() {
     return {
       cardMass: [],
-      adress: '',
       info: null,
       visible: false,
       lgvisible: false,
@@ -49,16 +51,16 @@ export default {
       this.cardMass.push(newElem);
     },
     showModal() {
-      // this.cardMass.push({ });
       this.visible = !this.visible;
     },
+
     deleteAll() {
       let elem = null;
       while (this.cardMass.length !== 0) {
         elem = this.cardMass.pop();
         console.log(elem.id);
         axios
-          .post(`${this.adress}/api/v1/user/delete`, {
+          .post('/api/v1/user/delete', {
             user_id: elem.id,
           })
           .then((response) => { console.log(response); })
@@ -78,15 +80,9 @@ export default {
       });
     },
   },
-  // methods: {
-  //   newValue(ider) {
-  //     this.id = ider;
-  //   },
-  // },
   mounted() {
-    this.adress = obj.adress;
     axios
-      .post(`${this.adress}/api/v1/user/list/with_badges`, {})
+      .post('/api/v1/user/list/with_badges', {})
       .then((response) => {
         this.info = response;
         this.initMass();
@@ -99,13 +95,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Comfortaa', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 20px;
+  background-color: #F7F8FA;
+  margin-top: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0px 0px 42px 0px;
+  padding: 0px 70px;
+  box-shadow: 0px 1px 0px rgba(129, 129, 129, 0.25);
+
+  height: 70px;
+
+  background-color: #FFFF;
+
+  &__logo {
+    font-size: 40px;
+    font-weight: bold;
+    cursor: default;
+
+    height: inherit;
+  }
+
+  &__button {
+    width: 115px;
+    padding: 8px;
+
+    border: 1px solid black;
+    border-radius: 60px;
+
+    background-color: #FFFF;
+
+    cursor: pointer;
+    font-size: 22px;
+  }
 }
 
 .display-card {

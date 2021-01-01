@@ -34,9 +34,6 @@ export default {
     badges: {
       type: Array,
     },
-    adress: {
-      type: String,
-    },
   },
   data() {
     return {
@@ -168,7 +165,7 @@ export default {
 
 <style lang="scss" scoped>
 .element-place {
-  width: 400px;
+  width: 410px;
   height: 500px;
   margin: 0;
   position: relative;

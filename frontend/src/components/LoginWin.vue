@@ -4,11 +4,7 @@
     <div class="login-window">
 
       <header class="logo login-window__header">
-        <img
-          src="../assets/cldsun.png"
-          class="logo__wrap-img"
-        />
-        <p class="logo__wrap-text">SING IN</p>
+        <p class="logo__wrap-text">Sign In</p>
       </header>
 
       <div class="login-form login-window__main">
@@ -31,7 +27,7 @@
           class="button-style"
           name="form_auth_submit"
           @click="send"
-        >Войти</button>
+        >SIGN IN</button>
       </div>
 
       <a
@@ -50,12 +46,10 @@
 
 <script>
 import axios from 'axios';
-import obj from '../../public/config/http';
 
 export default {
   data() {
     return {
-      adress: '',
       login: '',
       password: '',
     };
@@ -67,7 +61,7 @@ export default {
     send() {
       console.log(this.adress);
       axios
-        .post(`${this.adress}/api/v1/auth/sign_in`, {
+        .post('/api/v1/auth/sign_in', {
           login: this.login,
           password: this.password,
         })
@@ -77,12 +71,14 @@ export default {
     },
   },
   mounted() {
-    this.adress = obj.adress;
+    this.adress = process.env.SERVER_HOST;
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 .background {
   display: flex;
   justify-content: space-around;
@@ -93,24 +89,26 @@ export default {
 
   width: 100%;
   height: 100%;
+  top: 71px;
 
-  background-color: #3aa1ca;
+  backdrop-filter: blur(15px);
+  background-color: hsla(0, 0%, 51%, 0.452);
 }
 
 .login-window {
   position: relative;
   background-color: #fafafa;
-  width: 450px;
-  height: 400px;
+  width: 402px;
+  height: 421px;
 
   border-radius: 10px;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.5);
 
   &__header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 55px 0 30px 0;
+    justify-content: start;
+
+    margin: 52px 0 36px 0;
   }
   &__main {
     display: flex;
@@ -124,51 +122,36 @@ export default {
   }
 }
 .logo {
-  &__wrap-img {
-    margin: 0 10px 0 0;
-    height: 50px;
-  }
-
   &__wrap-text {
-    padding: 12px 0 6px 0;
-    border-bottom: solid 5px #3aa1ca;
-
+    margin: 0 0 0 27px;
     font-size: 20px;
+
     cursor: default;
   }
 }
 
 .login-form {
   &__inp-width {
+    font-family: 'Roboto', sans-serif;
     display: inline-block;
-    border: none;
+
+    background: #FFFFFF;
+
     box-sizing: border-box;
-    border-bottom: 2px solid #f6f6f6;
+    border: 1px solid #000000;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-
-    margin: 10px 0;
-    padding: 15px 32px;
-    width: 85%;
+    margin: 0 0 20px 0;
+    padding: 7px 17px;
+    width: 350px;
 
     background-color: #f6f6f6;
     color: #0d0d0d;
 
     text-align: center;
-
     text-decoration: none;
-    font-size: 16px;
-
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-    &:focus {
-      background-color: #fff;
-      border-bottom: 2px solid #5fbae9;
-    }
+    font-size: 15px;
   }
 }
 
@@ -185,7 +168,6 @@ export default {
 
   box-sizing: border-box;
   text-decoration: none;
-  color: black;
 
   :active :hover {
     text-decoration: none;
@@ -196,20 +178,21 @@ export default {
   }
 }
 .button-style {
+  font-family: 'Roboto', sans-serif;
   display: inline-block;
-  margin: 5px 20px 40px 20px;
+
   padding: 15px 80px;
+  width: 350px;
+  height: 51px;
 
   border: none;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
 
-  background-color: #56baed;
+  background-color: #000000;
   color: white;
-  font-size: 20px;
+  font-size: 13px;
+  font-weight: 900;
   text-decoration: none;
-
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
-  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
 }
 </style>

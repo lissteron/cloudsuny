@@ -45,11 +45,6 @@
 import axios from 'axios';
 
 export default {
-  props: {
-    adress: {
-      type: String,
-    },
-  },
   data() {
     return {
       username: '',
@@ -95,7 +90,7 @@ export default {
       const formData = new FormData();
       formData.append('data', this.file.files[0]);
       axios
-        .post(`${this.adress}/api/v1/image/upload`, formData,
+        .post('/api/v1/image/upload', formData,
           {
             headers: {
               'Content-Type': 'multipart/from-data',
@@ -112,7 +107,7 @@ export default {
     },
     createUser() {
       axios
-        .post(`${this.adress}/api/v1/user/create`, {
+        .post('/api/v1/user/create', {
           username: this.username,
           avatar: this.imagePath,
         })
