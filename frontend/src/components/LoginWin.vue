@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-
+    <div class="background_close" @click="close"></div>
     <div class="login-window">
 
       <header class="logo login-window__header">
@@ -18,7 +18,7 @@
         <input
           class="login-form__inp-width"
           v-model="password"
-          type="text"
+          type="password"
           placeholder="password"
           required
         >
@@ -30,14 +30,11 @@
         >SIGN IN</button>
       </div>
 
-      <a
-        class="login-window__close-btn close-btn"
-        @click="close"
-      >
-        <img
-          src="../assets/mark.svg"
-          class="close-btn__img-size"
-        />
+      <a class="login-window__close-btn close-btn"
+         @click="close">
+        <svg class="close-btn_color" xmlns="http://www.w3.org/2000/svg">
+        <path  d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2"/>
+        </svg>
       </a>
 
     </div>
@@ -52,11 +49,13 @@ export default {
     return {
       login: '',
       password: '',
+      isLogin: false,
     };
   },
   methods: {
     close() {
-      this.$emit('close');
+      console.log(this.isLogin);
+      this.$emit('close', this.isLogin);
     },
     send() {
       console.log(this.adress);
@@ -65,9 +64,12 @@ export default {
           login: this.login,
           password: this.password,
         })
-        .then((response) => { console.log(response); })
+        .then((response) => {
+          console.log(response); localStorage.setItem('cloudsun', this.login); this.isLogin = true;
+          console.log(this.login);
+          this.close();
+        })
         .catch((error) => { console.log(`you have error == ${error}`); });
-      this.close();
     },
   },
   mounted() {
@@ -93,14 +95,20 @@ export default {
 
   backdrop-filter: blur(15px);
   background-color: hsla(0, 0%, 51%, 0.452);
+
+  &_close {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .login-window {
-  position: relative;
+  position: absolute;
   background-color: #fafafa;
   width: 402px;
   height: 421px;
 
+  z-index: 30;
   border-radius: 10px;
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.5);
 
@@ -162,19 +170,18 @@ export default {
 
   background-color: rgb(246, 246, 246);
   border-radius: 50%;
-  border: solid 1px #3aa1ca;
+  // border: solid 1px #3aa1ca;
 
   padding: 6px;
 
   box-sizing: border-box;
   text-decoration: none;
-
-  :active :hover {
-    text-decoration: none;
+  &:hover path{
+    stroke: #4D7FFF;
   }
-
-  &__img-size {
+  &_color{
     width: 100%;
+    height: 100%;
   }
 }
 .button-style {

@@ -6,22 +6,30 @@
       </picture>
       <!-- передаем на аутсорс отрисовку солнышек и тучек -->
       <div class="wrapper">
-        <PlaceImgCard :badges="badges" class="wraper"/>
+        <PlaceImgCard :badges="badges" :isLogin="isLogin" class="wraper"/>
       </div>
 
-      <footer class="footer">
+      <footer class="footer"
+      v-bind:class="{'footer-wrap': isLogin}">
         <p class="footer__text-wrap">{{ card.username }}</p>
 
-        <button @click="addElemtoArr('sun')" class="footer__button">
-          <img src="sun.svg"/>
+        <button @click="addElemtoArr('sun')" class="footer__button"
+        v-bind:class="{'footer__button-visible': !isLogin}">
+          <img class= "" :src="sun" @mouseover="mouseOver('sun')"
+          @mouseleave="mouseLeave('sun')" />
         </button>
 
-        <button @click="addElemtoArr('cloud')" class="footer__button">
-          <img src="cloud.svg"/>
+        <button @click="addElemtoArr('cloud')" class="footer__button"
+        v-bind:class="{'footer__button-visible': !isLogin}">
+          <img class= "" :src="cloud" @mouseover="mouseOver('cloud')"
+          @mouseleave="mouseLeave('cloud')"/>
         </button>
 
-        <button @click="addElemtoArr('indian')" class="footer__button">
-          <img src="indian.svg"/>
+        <button @click="addElemtoArr('indian')" class="footer__button"
+        v-bind:class="{'footer__button-visible': !isLogin}"
+        >
+          <img class= "" :src="indian" @mouseover="mouseOver('indian')"
+          @mouseleave="mouseLeave('indian')"/>
         </button>
       </footer>
     </div>
@@ -41,8 +49,18 @@ export default {
       type: Object,
       required: true,
     },
+    isLogin: {
+      type: Boolean,
+    },
   },
-  data() { return { badges: [] }; },
+  data() {
+    return {
+      badges: [],
+      sun: 'sun.svg',
+      cloud: 'cloud.svg',
+      indian: 'indian.svg',
+    };
+  },
   methods: {
     addElemtoArr(chooseImg) {
       axios
@@ -52,6 +70,30 @@ export default {
           user_id: this.card.id,
         })
         .then((response) => { this.badges.push(response.data.data); });
+    },
+    mouseOver(el) {
+      switch (el) {
+        case 'sun':
+          this.sun = 'sunHov.svg';
+          break;
+        case 'cloud':
+          this.cloud = 'cloudHvr.svg';
+          break;
+        default:
+          this.indian = 'indHvr.svg';
+      }
+    },
+    mouseLeave(el) {
+      switch (el) {
+        case 'sun':
+          this.sun = 'sun.svg';
+          break;
+        case 'cloud':
+          this.cloud = 'cloud.svg';
+          break;
+        default:
+          this.indian = 'indian.svg';
+      }
     },
   },
   mounted() {
@@ -88,19 +130,30 @@ export default {
 
 .footer {
   display: flex;
-  justify-content: space-around;
 
   width: inherit;
   height: 50px;
 
   position: absolute;
   bottom: 0;
-  background: none;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(75, 75, 75, 0) 100%);
 
+  &-wrap {
+    justify-content: space-around;
+    align-items: center;
+  }
   &__text-wrap {
     width: 250px;
+
+    font-style: normal;
     text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+
     padding: 0 0 0 10px;
+
+    color: aliceblue;
+    cursor: default;
   }
 
   &__button {
@@ -108,7 +161,9 @@ export default {
     border: none;
     border-radius: 10px;
     background: none;
-
+    &-visible{
+      display: none;
+    }
     cursor: pointer;
     &:active {
       background-color: #274f7d;

@@ -1,7 +1,7 @@
 <template>
-  <!-- <transition name="modal" :duration="{ enter: 800, leave: 800 }"> -->
   <div class="modal-mask">
     <div class="modal-wrapper">
+
       <div class="modal-header">
         <div name="header">Card Content</div>
       </div>
@@ -25,8 +25,8 @@
             id="file"
             ref="file"
             v-on:change="handleFileUpload"
-            @click="isLoad = false"
-            v-bind:class="{red: isLoad}"
+            @click="isFileEmpty = false"
+            v-bind:class="{red: isFileEmpty}"
           />
         </label>
         <button class="modal-body__button button-style" @click="create">
@@ -36,9 +36,9 @@
           X
         </button>
       </div>
+
     </div>
   </div>
-  <!-- </transition> -->
 </template>
 
 <script>
@@ -51,17 +51,20 @@ export default {
       file: '',
       imagePath: '',
       isEmpty: false,
-      isLoad: false,
+      isFileEmpty: false,
       spaceReg: / /g,
     };
   },
   methods: {
     handleFileUpload() {
+      // console.log(this.$refs.file);
       this.file = this.$refs.file;
+      console.log(this.$refs.file.files);
     },
     create() {
       if (!this.checkInput(this.username)) { this.isEmpty = true; return; }
-      if (!this.checkInput(this.file)) { this.isLoad = true; }
+      if (!this.checkInput(this.file)) { this.isFileEmpty = true; return; }
+      this.uploadImg();
     },
     checkInput(element) {
       let param = '';
@@ -75,18 +78,11 @@ export default {
         default:
       }
       // this.name = this.username.replace(/ /g, ''); // TODO: добавить регулярку
-      if (param === '') {
-        alert('fuck off');
-        return false;
-      }
+      if (param === '') { alert('fuck off'); return false; }// TODO: create modalwin mistake
       return true;
       // this.uploadImg();
     },
     uploadImg() {
-      if (this.imagePath !== '') {
-        this.createUser();
-        return;
-      }
       const formData = new FormData();
       formData.append('data', this.file.files[0]);
       axios
@@ -97,6 +93,7 @@ export default {
             },
           })
         .then((response) => {
+          console.log(response);
           this.imagePath = response.data.data.name;
           console.log(this.imagePath);
           this.createUser();
@@ -138,7 +135,7 @@ export default {
 <style lang="scss" scoped>
 .modal-mask {
   position: fixed;
-  z-index: 10;
+  z-index: 20;
   top: 0;
   left: 0;
   width: 100%;

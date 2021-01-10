@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 
 const mouseup = 'mouseup';
 
@@ -33,6 +33,9 @@ export default {
   props: {
     badges: {
       type: Array,
+    },
+    isLogin: {
+      type: Boolean,
     },
   },
   data() {
@@ -65,6 +68,9 @@ export default {
 
     onMouseDown(event) {
       event.preventDefault();
+      if (this.isLogin === false) { return; }
+
+      // event.preventDefault();
 
       this.getCoords(event);
       this.limitsPlace = this.takePlaceCoords(this.shiftW, this.shiftH);
@@ -74,24 +80,22 @@ export default {
       document.addEventListener(mouseup, this.onMouseUp);
     },
     onMouseUp() {
-      // axios
-      //   .post(`${this.adress}/api/v1/badge/update`, {
-      //     id: this.dragElement.id,
-      //     point: {
-      //       x: this.getX,
-      //       y: this.getY,
-      //     },
-      //   })
-      //   .then((response) => {
-      //     // this.info = response;
-      //     console.log(response);
-      //   })
-      //   .catch((error) => {
-      //     // this.info = error;
-      //     console.log(error);
-      //   });
-      // this.getX = 0;
-      // this.getY = 0;
+      if (this.dragElement !== null) {
+        axios
+          .post('/api/v1/badge/update', {
+            id: this.dragElement.id,
+            point: {
+              x: this.getX,
+              y: this.getY,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
       this.isDrag = false;
 
       document.removeEventListener(mouseup, this.onMouseUp);
@@ -136,10 +140,17 @@ export default {
 
       this.getX = newLocation.x;
       this.getY = newLocation.y;
+      console.log(`new relocate ${this.getX}+${this.getY}`);
     },
     // при нажатии на элемент запоминаем координаты нажатия
     getCoords(event) {
       this.dragElement = event.target.parentElement;
+
+      this.getX = this.dragElement.getBoundingClientRect().left
+      - this.$refs.placeImgCard.getBoundingClientRect().left;
+      this.getY = this.dragElement.getBoundingClientRect().top
+      - this.$refs.placeImgCard.getBoundingClientRect().top;
+      console.log(`old ${this.getX}+${this.getY}`);
 
       this.shiftX = event.clientX - this.dragElement.getBoundingClientRect().left;
       this.shiftY = event.clientY - this.dragElement.getBoundingClientRect().top;
@@ -150,10 +161,12 @@ export default {
 
     drawImg(imgType) {
       switch (imgType) {
+        case 'sun':
+          return './sunHov.svg';
         case 'cloud':
-          return './sun.png';
+          return './cloudHvr.svg';
         default:
-          return './cloud.png';
+          return './indHvr.svg';
       }
     },
   },
