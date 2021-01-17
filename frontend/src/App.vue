@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <login v-if="lgvisible" @close="signIn"/>
+    <modal-win @update='updateWin' @close="showModal" v-if="visible"/>
+
     <div class="header">
         <svg class="header__logo">
           <text x="0" y="50">
@@ -9,12 +11,12 @@
           </text>
         </svg>
         <div class="buttons header__lgnBlock">
-          <a @click="visible=!visible"
+          <a @click="modalOpen('visible')"
           class="header__button header__button_l"
           v-bind:class="{ 'header_visible': !isLogin }">
             + Add user
           </a>
-          <a @click="lgvisible=!lgvisible"
+          <a @click="modalOpen('lgvisible')"
           class="header__button header__button_m"
           v-bind:class="{'header_visible': isLogin}"
           >Login</a>
@@ -47,7 +49,6 @@
     </div>
 
     <!-- <button @click="deleteAll">del</button> -->
-    <modal-win @update='updateWin' @close="showModal" v-if="visible"/>
 
     <div class="display-card">
       <drow-cards
@@ -73,6 +74,11 @@ export default {
     ModalWin,
     Login,
   },
+  computed: {
+    scrollHeight() {
+      return window.innerHeight;
+    },
+  },
   data() {
     return {
       cardMass: [],
@@ -81,21 +87,41 @@ export default {
       lgvisible: false,
       login: '',
       isLogin: false,
+      limit: 6,
+      offset: 0,
     };
   },
   methods: {
-    updateWin(newElem) {
-      this.cardMass.push(newElem);
+
+    // modal win
+    modalOpen(element) {
+      switch (element) {
+        case 'visible':
+          this.visible = !this.visible;
+          break;
+        default:
+          this.lgvisible = !this.lgvisible;
+      }
+
+      this.documentStyle('100vh', 'hidden');
+    },
+    documentStyle(height = '', visible = '') {
+      document.body.style.height = height;
+      document.body.style.overflowY = visible;
     },
     showModal() {
       this.visible = !this.visible;
-    },
-    signIn(isLogin) {
-      this.isLogin = isLogin;
-      console.log(this.isLogin);
-      this.lgvisible = !this.lgvisible;
+      this.documentStyle();
     },
 
+    // login and logout methods
+    signIn(isLogin, login) {
+      this.isLogin = isLogin;
+      if (login !== '') { this.login = login; }
+      console.log(this.isLogin);
+      this.documentStyle();
+      this.lgvisible = !this.lgvisible;
+    },
     signOut() {
       axios
         .post('/api/v1/auth/sign_out', {})
@@ -103,6 +129,7 @@ export default {
           console.log(response);
           if (localStorage.removeItem('cloudsun') === undefined) {
             this.isLogin = false;
+            this.login = '';
           }
         })
         .catch((error) => { console.log(`you have error == ${error}`); });
@@ -125,25 +152,74 @@ export default {
       this.cardMass.pop();
     },
 
-    initMass() {
-      if (this.info.headers['x-admin'] === 'true') {
+    // update and load cards
+    initMass(response, firstInit = false) {
+      if (firstInit === true && this.info.headers['x-admin'] === 'true') {
         this.isLogin = true;
       }
-      const bufArr = this.info.data.data;
+
+      const bufArr = response.data.data;
       bufArr.forEach((item) => {
         this.cardMass.push(
           item,
         );
       });
     },
+
+    updateWin(newElem) {
+      this.cardMass.push(newElem);
+    },
+
+    handleScroll() {
+      console.log(`${document.body.scrollHeight} - ${this.scrollHeight} - ${window.scrollY}`);
+      if (
+        document.body.scrollHeight - this.scrollHeight - window.scrollY <= 0
+      ) {
+        console.log('in the end load more');
+        axios
+          .post('/api/v1/user/list/with_badges', {
+            limit: this.limit,
+            offset: this.offset,
+          })
+          .then((response) => {
+            this.checkLoadImg(response);
+          })
+          .catch((error) => {
+            this.info = error;
+          });
+      }
+    },
+    checkLoadImg(response) {
+      let skipped = 0;
+
+      if (response.data.skipped !== undefined) {
+        skipped = parseInt(response.data.skipped, 10);
+      }
+
+      switch (true) {
+        case (parseInt(response.data.count, 10) + skipped
+         < parseInt(response.data.total, 10)):
+          this.offset += response.data.count;
+          break;
+        default:
+          this.offset = response.data.total;
+      }
+
+      this.initMass(response);
+    },
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll);
   },
   mounted() {
     if (localStorage.getItem('cloudsun') !== null) { this.login = localStorage.getItem('cloudsun'); }
     axios
-      .post('/api/v1/user/list/with_badges', {})
+      .post('/api/v1/user/list/with_badges', {
+        limit: this.limit,
+        offset: this.offset,
+      })
       .then((response) => {
-        this.info = response;
-        this.initMass();
+        this.checkLoadImg(response);
       })
       .catch((error) => {
         this.info = error;

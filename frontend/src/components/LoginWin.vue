@@ -12,7 +12,8 @@
           class="login-form__inp-width"
           v-model="login"
           type="text"
-          placeholder="login"
+          placeholder="username"
+          @click="isEmpty=true"
           required
         >
         <input
@@ -20,6 +21,7 @@
           v-model="password"
           type="password"
           placeholder="password"
+          @click="isEmpty=true"
           required
         >
 
@@ -28,6 +30,10 @@
           name="form_auth_submit"
           @click="send"
         >SIGN IN</button>
+
+        <div v-if="!isEmpty" class="invalidValue">
+          <span class="invalidValue__content">Invalid username or password</span>
+        </div>
       </div>
 
       <a class="login-window__close-btn close-btn"
@@ -50,14 +56,17 @@ export default {
       login: '',
       password: '',
       isLogin: false,
+      isEmpty: true,
     };
   },
   methods: {
     close() {
       console.log(this.isLogin);
-      this.$emit('close', this.isLogin);
+      this.$emit('close', this.isLogin, this.login);
     },
     send() {
+      console.log(`${this.password} and ${this.login}`);
+      if (this.login === '' || this.password === '') { this.isEmpty = false; return; }
       console.log(this.adress);
       axios
         .post('/api/v1/auth/sign_in', {
@@ -79,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 .background {
   display: flex;
@@ -109,7 +118,7 @@ export default {
   height: 421px;
 
   z-index: 30;
-  border-radius: 10px;
+  border-radius: 5%;
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.5);
 
   &__header {
@@ -125,14 +134,19 @@ export default {
   }
   &__close-btn {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 19px;
+    top: 21px;
   }
 }
 .logo {
   &__wrap-text {
+
     margin: 0 0 0 27px;
-    font-size: 20px;
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 40px;
 
     cursor: default;
   }
@@ -140,6 +154,7 @@ export default {
 
 .login-form {
   &__inp-width {
+
     font-family: 'Roboto', sans-serif;
     display: inline-block;
 
@@ -149,15 +164,17 @@ export default {
     border: 1px solid #000000;
     -webkit-border-radius: 4px;
     border-radius: 4px;
+    outline: none;
 
     margin: 0 0 20px 0;
     padding: 7px 17px;
     width: 350px;
+    height: 40px;
 
     background-color: #f6f6f6;
     color: #0d0d0d;
 
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     font-size: 15px;
   }
@@ -189,6 +206,7 @@ export default {
   display: inline-block;
 
   padding: 15px 80px;
+  margin: 0 0 20px 0;
   width: 350px;
   height: 51px;
 
@@ -201,5 +219,30 @@ export default {
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
+}
+.invalidValue {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 350px;
+  height: 51px;
+
+  border: 1px solid rgba(235, 0, 0, 0.85);
+  box-sizing: border-box;
+  border-radius: 6px;
+
+  &__content {
+
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 13px;
+    color: rgba(235, 0, 0, 0.85);
+    line-height: 15px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
 }
 </style>
