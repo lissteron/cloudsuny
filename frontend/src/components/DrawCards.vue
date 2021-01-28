@@ -2,35 +2,35 @@
   <div>
     <div class="card-content">
       <picture>
-        <img :src="'/'+ card.avatar" class="card-content__img"/>
+          <img :src="'/'+ card.avatar" class="card-content__img" @error="onError"/>
       </picture>
       <!-- передаем на аутсорс отрисовку солнышек и тучек -->
       <div class="wrapper">
-        <PlaceImgCard :badges="badges" :isLogin="isLogin" class="wraper"/>
+          <PlaceImgCard :badges="badges" :isLogin="isLogin" class="wraper"/>
       </div>
 
       <footer class="footer"
       v-bind:class="{'footer-wrap': isLogin}">
-        <p class="footer__text-wrap">{{ card.username }}</p>
+          <p class="footer__text-wrap">{{ card.username }}</p>
 
-        <button @click="addElemtoArr('sun')" class="footer__button"
-        v-bind:class="{'footer__button-visible': !isLogin}">
-          <img class= "" :src="sun" @mouseover="mouseOver('sun')"
-          @mouseleave="mouseLeave('sun')" />
-        </button>
+          <button @click="addElemtoArr('sun')" class="footer__button"
+          v-bind:class="{'footer__button-visible': !isLogin}">
+            <img class= "" :src="sun" @mouseover="mouseOver('sun')"
+            @mouseleave="mouseLeave('sun')" />
+          </button>
 
-        <button @click="addElemtoArr('cloud')" class="footer__button"
-        v-bind:class="{'footer__button-visible': !isLogin}">
-          <img class= "" :src="cloud" @mouseover="mouseOver('cloud')"
-          @mouseleave="mouseLeave('cloud')"/>
-        </button>
+          <button @click="addElemtoArr('cloud')" class="footer__button"
+          v-bind:class="{'footer__button-visible': !isLogin}">
+            <img class= "" :src="cloud" @mouseover="mouseOver('cloud')"
+            @mouseleave="mouseLeave('cloud')"/>
+          </button>
 
-        <button @click="addElemtoArr('indian')" class="footer__button"
-        v-bind:class="{'footer__button-visible': !isLogin}"
-        >
-          <img class= "" :src="indian" @mouseover="mouseOver('indian')"
-          @mouseleave="mouseLeave('indian')"/>
-        </button>
+          <button @click="addElemtoArr('indian')" class="footer__button"
+          v-bind:class="{'footer__button-visible': !isLogin}"
+          >
+            <img class= "" :src="indian" @mouseover="mouseOver('indian')"
+            @mouseleave="mouseLeave('indian')"/>
+          </button>
       </footer>
     </div>
   </div>
@@ -39,6 +39,7 @@
 <script>
 import axios from 'axios';
 import PlaceImgCard from './PlaceImgCardv2.vue';
+import imgErr from '../assets/cat1.jpg';
 
 export default {
   components: {
@@ -71,6 +72,7 @@ export default {
         })
         .then((response) => { this.badges.push(response.data.data); });
     },
+
     mouseOver(el) {
       switch (el) {
         case 'sun':
@@ -95,9 +97,13 @@ export default {
           this.indian = 'indian.svg';
       }
     },
+
+    onError(el) {
+      const img = el;
+      img.target.src = imgErr;
+    },
   },
   mounted() {
-    console.log(this.card);
     if (this.card.badges !== undefined) {
       this.badges = this.card.badges;
     }
@@ -110,19 +116,20 @@ export default {
 .card-content {
   position: relative;
 
-  width: 410px;
+  width:  410px;
   height: 550px;
 
   background-color: #b3b3b3;
 
   &__img {
-    width: 100%;
+    width:  100%;
     height: 550px;
   }
 }
 
 .wrapper {
   z-index: 10;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -157,17 +164,16 @@ export default {
   }
 
   &__button {
-    outline: none;
     border: none;
     border-radius: 10px;
     background: none;
-    &-visible{
-      display: none;
-    }
+    outline: none;
+
     cursor: pointer;
-    &:active {
-      background-color: #274f7d;
-    }
+
+    &-visible{ display: none;}
+
+    &:active { background-color: #274f7d;}
   }
 }
 </style>

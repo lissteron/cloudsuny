@@ -70,8 +70,6 @@ export default {
       event.preventDefault();
       if (this.isLogin === false) { return; }
 
-      // event.preventDefault();
-
       this.getCoords(event);
       this.limitsPlace = this.takePlaceCoords(this.shiftW, this.shiftH);
 
@@ -88,12 +86,6 @@ export default {
               x: this.getX,
               y: this.getY,
             },
-          })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
           });
       }
       this.isDrag = false;
@@ -109,7 +101,6 @@ export default {
         x: this.limitsPlace.left,
         y: this.limitsPlace.top,
       };
-      // console.log(`${event.pageX} ${this.shiftW} = ${this.limitsPlace.right}`);
       switch (true) {
         case event.pageX + this.shiftW > this.limitsPlace.right:
           newLocation.x = this.limitsPlace.right - this.shiftX - this.limitsPlace.left;
@@ -140,7 +131,6 @@ export default {
 
       this.getX = newLocation.x;
       this.getY = newLocation.y;
-      console.log(`new relocate ${this.getX}+${this.getY}`);
     },
     // при нажатии на элемент запоминаем координаты нажатия
     getCoords(event) {
@@ -150,7 +140,6 @@ export default {
       - this.$refs.placeImgCard.getBoundingClientRect().left;
       this.getY = this.dragElement.getBoundingClientRect().top
       - this.$refs.placeImgCard.getBoundingClientRect().top;
-      console.log(`old ${this.getX}+${this.getY}`);
 
       this.shiftX = event.clientX - this.dragElement.getBoundingClientRect().left;
       this.shiftY = event.clientY - this.dragElement.getBoundingClientRect().top;
@@ -170,29 +159,24 @@ export default {
       }
     },
   },
-  mounted() {
-    // this.$emit('initPlace');
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 .element-place {
-  width: 410px;
+  position: relative;
+  width:  410px;
   height: 500px;
   margin: 0;
-  position: relative;
 
   &__items {
     position: absolute;
-    // border: solid 1px black;
-    // background-color: #cde3fc;
     box-sizing: border-box;
-    width: 50px;
+    width:  50px;
     height: 50px;
   }
   &__imgSize {
-    width: 100%;
+    width:  100%;
     height: 100%;
     background: none;
   }

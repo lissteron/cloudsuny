@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div class="background" @keyup.enter="send">
     <div class="background_close" @click="close"></div>
     <div class="login-window">
 
@@ -13,7 +13,7 @@
           v-model="login"
           type="text"
           placeholder="username"
-          @click="isEmpty=true"
+          @click="dropError"
           required
         >
         <input
@@ -21,7 +21,7 @@
           v-model="password"
           type="password"
           placeholder="password"
-          @click="isEmpty=true"
+          @click="dropError"
           required
         >
 
@@ -32,12 +32,12 @@
         >SIGN IN</button>
 
         <div v-if="!isEmpty" class="invalidValue">
-          <span class="invalidValue__content">Invalid username or password</span>
+          <span class="invalidValue__content">{{errorMsg}}</span>
         </div>
       </div>
 
       <a class="login-window__close-btn close-btn"
-         @click="close">
+      @click="close">
         <svg class="close-btn_color" xmlns="http://www.w3.org/2000/svg">
         <path  d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2"/>
         </svg>
@@ -49,40 +49,62 @@
 
 <script>
 import axios from 'axios';
+import { spaceReg, stringArr } from '../config/config';
 
 export default {
   data() {
     return {
       login: '',
       password: '',
+
       isLogin: false,
       isEmpty: true,
+
+      errorMsg: '',
     };
   },
   methods: {
     close() {
-      console.log(this.isLogin);
-      this.$emit('close', this.isLogin, this.login);
+      this.$emit(stringArr.cls, this.isLogin, this.login);
     },
     send() {
-      console.log(`${this.password} and ${this.login}`);
-      if (this.login === '' || this.password === '') { this.isEmpty = false; return; }
-      console.log(this.adress);
+      if (!this.checkInput(this.login) || !this.checkInput(this.password)) {
+        this.dropError(false);
+
+        this.errorMsg = stringArr.errLogin;
+        return;
+      }
+
       axios
         .post('/api/v1/auth/sign_in', {
           login: this.login,
           password: this.password,
         })
-        .then((response) => {
-          console.log(response); localStorage.setItem('cloudsun', this.login); this.isLogin = true;
-          console.log(this.login);
+        .then(() => {
+          localStorage.setItem(stringArr.cookie, this.login);
+          this.isLogin = true;
+
           this.close();
         })
-        .catch((error) => { console.log(`you have error == ${error}`); });
+        .catch((error) => {
+          const desc = JSON.parse(error.response.request.response);
+          this.errorMsg = desc.details[0].description;
+
+          this.dropError(false);
+        });
     },
-  },
-  mounted() {
-    this.adress = process.env.SERVER_HOST;
+
+    checkInput(element) {
+      const param = element.replace(spaceReg, '');
+      if (param === '') { return false; }
+      return true;
+    },
+
+    dropError(isEmpty = true) {
+      this.isEmpty = isEmpty;
+
+      this.errorMsg = isEmpty ? '' : this.errorMsg;
+    },
   },
 };
 </script>
@@ -96,11 +118,11 @@ export default {
   align-items: center;
 
   position: fixed;
-  z-index: 20;
+  z-index:  20;
 
-  width: 100%;
+  width:  100%;
   height: 100%;
-  top: 71px;
+  top:    70px;
 
   backdrop-filter: blur(15px);
   background-color: hsla(0, 0%, 51%, 0.452);
@@ -187,7 +209,6 @@ export default {
 
   background-color: rgb(246, 246, 246);
   border-radius: 50%;
-  // border: solid 1px #3aa1ca;
 
   padding: 6px;
 
@@ -213,6 +234,7 @@ export default {
   border: none;
   -webkit-border-radius: 6px;
   border-radius: 6px;
+  outline: none;
 
   background-color: #000000;
   color: white;
@@ -244,5 +266,62 @@ export default {
     letter-spacing: -1px;
     text-transform: uppercase;
   }
+}
+@media(max-width: 450px){
+  .background{
+    align-items: flex-start;
+    background-color: #fff;
+  }
+
+  .login-window {
+    position: absolute;
+
+    width: 402px;
+    height: 453px;
+    background: #FFFFFF;
+    border-radius: 20px;
+
+    box-shadow: 0 0 0 0;
+
+    &__header {
+      display: flex;
+      justify-content: start;
+
+      margin: 60px 0 36px 0;
+    }
+    &__main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    &__close-btn {
+      display: none;
+    }
+  }
+  .button-style {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 24px;
+    &:hover{
+      background: #CFCFCF;
+    }
+  }
+  .visible-button {
+  display: block;
+  }
+  .invalidValue {
+
+    &__content {
+
+      font-family: 'Roboto', sans-serif;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 24px;
+      line-height: 24px;
+
+    }
+  }
+
 }
 </style>
