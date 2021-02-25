@@ -1,33 +1,31 @@
 <template>
-  <div class="background" @keypress.enter="create">
-    <div class="background_close" @click="close('close')"></div>
-    <div :class="{'modal-win_new-width':isNextStep}" class="modal-win">
-
-      <header class="logo modal-win__header">
-         <p class="logo__wrap-text">{{mobileText}}</p>
+  <div class="background">
+    <div class="background_close" @click="close()"></div>
+    <div :class="{ 'modal-window_new-width': secondStep }" class="modal-window">
+      <header class="logo modal-window__header">
+        <p class="logo__wrap-text">Add User</p>
       </header>
 
-      <div class="modal-body">
-
-        <div
-          v-if="isNextStep"
-          ref="imgPlace"
-          class="imgPlace">
+      <form
+        class="modal-body"
+        :class="{ 'modal-body_wrap': !secondStep }"
+        @submit.prevent="create"
+      >
+        <div v-if="imagePath.src" ref="imgPlace" class="image-place">
+          <img :src="imagePath.src" class="test" />
         </div>
 
         <input
           type="text"
-          v-model="username"
-          placeholder="Enter Login"
+          ref="inputText"
+          v-model.trim="username"
+          placeholder="Enter Username"
           class="modal-body__input"
           @click="dropError"
           maxlength="15"
         />
 
-        <label
-          v-if="!isNextStep"
-          for = "file"
-          class="modal-body__input label">
+        <label v-if="!secondStep" for="file" class="modal-body__input label">
           select photo
         </label>
 
@@ -35,28 +33,31 @@
           type="file"
           id="file"
           ref="file"
-          v-on:change="handleFileUpload"
-          class="modal-body__visible"
+          @change="handleFileUpload"
           @click="dropError"
+          class="modal-body__visible"
         />
 
-        <button v-if="isNextStep" class="modal-body__button-style" @click="create">
+        <button
+          class="modal-body__button_style"
+          :class="{ 'modal-body__button_activate': secondStep }"
+          type="submit"
+          :disabled="disabled == true"
+          :style="{ opacity: opacitySet }"
+        >
           add user
         </button>
 
-        <div v-if="isEmpty||isFileEmpty" class="invalidValue">
-          <span class="invalidValue__content">{{errorMsg}}</span>
+        <div v-if="errorMsg" class="invalid-value">
+          <span class="invalid-value__content">{{ errorMsg }}</span>
         </div>
+      </form>
 
-      </div>
-
-      <a class="modal-win__close-btn close-btn"
-        @click="close">
-        <svg class="close-btn_color" xmlns="http://www.w3.org/2000/svg">
-        <path  d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2"/>
+      <a class="modal-window__close-button close-button" @click="close">
+        <svg class="close-button_color" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2" />
         </svg>
       </a>
-
     </div>
   </div>
 </template>
@@ -64,58 +65,52 @@
 <script>
 import axios from 'axios';
 import {
-  widthImg, heightImg, spaceReg, stringArr, mobileSize,
+  widthImg, heightImg, valuesName, mobileSize,
 } from '../config/config';
 
 export default {
   computed: {
-    mobileText() {
-      return (this.width <= mobileSize) ? 'Add User' : 'Create User';
+    opacitySet() {
+      return this.disabled ? '0.33' : '1';
     },
   },
   data() {
     return {
-      width: 0,
       username: '',
+
+      emitForLargeScreen: true,
+
       file: '',
-      imagePath: '',
-      imageName: '',
-      isEmpty: false,
-      isFileEmpty: false,
-      isNextStep: false,
+      avatar: '',
+
+      imagePath: { src: '' },
+
+      secondStep: false,
       errorMsg: '',
-      imgSize: null,
+      disabled: true,
     };
   },
   methods: {
     // load img method
     handleFileUpload() {
       this.file = this.$refs.file;
-      this.imageName = this.file.files[0].name;
-      this.isNextStep = true;
+
+      if (!this.identifyTypeImage(this.file.files[0].type)) { return; }
+
+      this.secondStep = true;
+      this.disabled = false;
+
+      this.$refs.inputText.focus();
 
       const img = new Image();
-      img.onload = () => {
-        this.getImgSize(img);
-      };
+      img.onload = () => { this.getImage(img); };
       img.src = URL.createObjectURL(this.file.files[0]);
     },
-    getImgSize(img) {
-      this.imgSize = img;
 
-      const imger = document.createElement('img');
-
-      imger.src = img.src;
-      imger.style.width = '100%';
-      imger.style.height = '100%';
-
-      this.$refs.imgPlace.appendChild(imger);
-    },
     uploadImg() {
-      if (this.imagePath !== '') { this.createUser(); return; }
-
       const formData = new FormData();
       formData.append('data', this.file.files[0]);
+
       axios
         .post('/api/v1/image/upload', formData,
           {
@@ -124,89 +119,124 @@ export default {
             },
           })
         .then((response) => {
-          switch (true) {
-            case response.data.data === null && response.data.errors[0].code === '0':
-              this.errorMsg = stringArr.imgLoadErr;
-              this.isFileEmpty = true;
-              break;
-            default:
-              this.imagePath = response.data.data.name;
-              this.createUser();
-          }
+          this.avatar = response.data.data.name;
+          this.createUser();
         })
         .catch(() => {
-          window.location.reload();
+          alert('some error with load Image');
         });
     },
 
     create() {
-      if (!this.checkInput(this.username)) {
-        this.isEmpty = true;
-        this.errorMsg = stringArr.entUsrname;
+      if (this.identifyInput()) {
         return;
       }
-      if (!this.checkInput(this.file)) {
-        this.isFileEmpty = true;
-        this.errorMsg = stringArr.chooseImg;
+
+      if (this.identifyImage()) {
         return;
       }
-      if (parseInt(this.imgSize.height, 10) < heightImg
-        || parseInt(this.imgSize.width, 10) < widthImg) {
-        this.errorMsg = stringArr.sizeErr;
-        this.isFileEmpty = true;
+
+      if (!this.identifyTypeImage(this.file.files[0].type)) {
+        return;
+      }
+
+      if (parseInt(this.imagePath.height, 10) < heightImg
+        || parseInt(this.imagePath.width, 10) < widthImg) {
+        this.errorMsg = valuesName.sizeErr;
+
         return;
       }
 
       this.uploadImg();
     },
-    checkInput(element) {
-      let param = '';
 
-      switch (true) {
-        case (typeof (element) === 'string'):
-          param = element.replace(spaceReg, '');
-          break;
-        case (typeof (element) === 'object'):
-          param = element;
-          break;
-        default:
+    identifyInput() {
+      this.errorMsg = (this.username === '') ? valuesName.entUsername : '';
+      return this.errorMsg;
+    },
+
+    identifyImage() {
+      this.errorMsg = (this.file === '') ? valuesName.chooseImg : '';
+      return this.errorMsg;
+    },
+
+    identifyTypeImage(typeOfFile = '') {
+      if (typeOfFile === undefined) {
+        return false;
       }
 
-      if (param === '') { return false; }
+      const str = typeOfFile.split('/');
+
+      if (str.length <= 1) {
+        return false;
+      }
+
+      if (str[0] !== valuesName.image) {
+        this.errorMsg = valuesName.notImageLoad;
+
+        return false;
+      }
+
+      if (str[1] !== valuesName.jpeg && str[1] !== valuesName.png) {
+        this.errorMsg = valuesName.imgLoadErr;
+
+        return false;
+      }
+
       return true;
     },
+
+    getImage(img) {
+      this.imagePath = img;
+    },
+
     createUser() {
       axios
         .post('/api/v1/user/create', {
           username: this.username,
-          avatar: this.imagePath,
+          avatar: this.avatar,
         })
-        .then((response) => {
-          const newElem = response.data.data;
+        .then(() => {
+          this.$emit('update');
 
-          this.imagePath = '';
-          this.isFileEmpty = true;
-
-          this.$emit(stringArr.update, newElem);
-          this.close(stringArr.ok);
+          this.close();
         })
         .catch((resp) => {
           const desc = JSON.parse(resp.response.request.response);
+
+          if (!desc.details.length) {
+            return;
+          }
+
           this.errorMsg = desc.details[0].description;
-          this.isEmpty = true;
         });
     },
 
-    close(btnName) {
-      this.$emit(stringArr.cls, btnName);
+    close() {
+      this.$emit('close');
     },
 
     updateWidth() {
-      this.width = window.innerWidth;
+      switch (true) {
+        case (window.innerWidth >= mobileSize && this.emitForLargeScreen):
+          this.emitForLargeScreen = false;
+
+          this.resetHamburgerImage(this.emitForLargeScreen);
+          break;
+        case (window.innerWidth <= mobileSize && !this.emitForLargeScreen):
+          this.emitForLargeScreen = true;
+
+          this.resetHamburgerImage(this.emitForLargeScreen);
+          break;
+        default:
+      }
     },
+
+    resetHamburgerImage(resetImage) {
+      this.$emit('resetHamburgerImage', resetImage);
+    },
+
     dropError() {
-      this.isFileEmpty = false;
-      this.isEmpty = false;
       this.errorMsg = '';
     },
   },
@@ -220,8 +250,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.test {
+  width: 100%;
+  height: 100%;
+}
 .background {
-
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -242,8 +275,7 @@ export default {
   }
 }
 
-.modal-win {
-
+.modal-window {
   position: absolute;
   background-color: #fafafa;
   width: 402px;
@@ -262,7 +294,7 @@ export default {
 
     margin: 20px 0 0 0;
   }
-  &__close-btn {
+  &__close-button {
     position: absolute;
     right: 19px;
     top: 21px;
@@ -271,7 +303,6 @@ export default {
 
 .logo {
   &__wrap-text {
-
     margin: 0 0 0 27px;
 
     font-style: normal;
@@ -288,14 +319,17 @@ export default {
   flex-direction: column;
   align-items: center;
 
-  margin: 35px 0;
+  margin: 25px 0;
+
+  &_wrap {
+    margin: 70px 0;
+  }
 
   &__input {
-
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     display: inline-block;
 
-    background: #FFFFFF;
+    background: #ffffff;
 
     box-sizing: border-box;
     border: 1px solid #000000;
@@ -321,13 +355,13 @@ export default {
   &__visible {
     display: none;
   }
-  &__button-style {
-    font-family: 'Roboto', sans-serif;
+  &__button_style {
+    font-family: "Roboto", sans-serif;
     display: inline-block;
 
     padding: 15px 80px;
-    margin:  0 0 20px 0;
-    width:  350px;
+    margin: 0 0 20px 0;
+    width: 350px;
     height: 51px;
     outline: none;
 
@@ -344,8 +378,7 @@ export default {
   }
 }
 
-.close-btn {
-
+.close-button {
   width: 30px;
   height: 30px;
 
@@ -356,10 +389,10 @@ export default {
 
   box-sizing: border-box;
   text-decoration: none;
-  &:hover path{
-    stroke: #4D7FFF;
+  &:hover path {
+    stroke: #4d7fff;
   }
-  &_color{
+  &_color {
     width: 100%;
     height: 100%;
   }
@@ -367,30 +400,29 @@ export default {
 
 .label {
   appearance: button;
-  background: #0870D1;
-  border: 2px solid #0870D1;
+  background: #0870d1;
+  border: 2px solid #0870d1;
 
   text-transform: uppercase;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 13px;
   line-height: 23px;
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: center;
   border-radius: 6px;
 
   &:hover {
-    background-color: #B6B9BB;
-    border-color:     #B6B9BB;
-    }
+    background-color: #b6b9bb;
+    border-color: #b6b9bb;
+  }
   &:active {
     background-color: #000000;
-    border-color:     #000000;
-    color:            #FFFFFF;
-    }
+    border-color: #000000;
+    color: #ffffff;
+  }
 }
 
-.invalidValue {
-
+.invalid-value {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,8 +435,7 @@ export default {
   border-radius: 6px;
 
   &__content {
-
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 13px;
@@ -414,27 +445,25 @@ export default {
     text-transform: uppercase;
   }
 }
-.visible-button {
-  display: none;
-}
-.imgPlace {
+
+.image-place {
   width: 140px;
   height: 240px;
   margin: 0 0 20px 0;
 }
-@media(max-width: 650px){
-  .background{
+@media (max-width: 650px) {
+  .background {
     align-items: flex-start;
     background-color: #fff;
     z-index: 50;
   }
 
-  .modal-win {
+  .modal-window {
     position: absolute;
     z-index: 60;
     width: 402px;
     height: 453px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 20px;
 
     box-shadow: 0 0 0 0;
@@ -442,35 +471,37 @@ export default {
     &__header {
       margin: 40px 0 26px 0;
     }
-    &__close-btn {
+    &__close-button {
       display: none;
     }
   }
-  .modal-body{
-    &__button-style {
-      font-style: normal;
-      font-weight: 900;
-      font-size: 24px;
-      line-height: 24px;
-      &:hover{
-        background: #CFCFCF;
+  .modal-body {
+    &__button {
+      &_style {
+        font-style: normal;
+        font-weight: 900;
+        font-size: 24px;
+        line-height: 24px;
+      }
+      &_activate {
+        &:hover {
+          background: #cfcfcf;
+        }
       }
     }
   }
-  .visible-button {
-  display: block;
-  }
-  .invalidValue {
 
+  .invalid-value {
     &__content {
-
-      font-family: 'Roboto', sans-serif;
+      font-family: "Roboto", sans-serif;
       font-style: normal;
       font-weight: 900;
       font-size: 24px;
       line-height: 24px;
-
     }
+  }
+  .label {
+    font-size: 20px;
   }
 }
 </style>

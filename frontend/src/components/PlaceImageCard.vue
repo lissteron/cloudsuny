@@ -5,36 +5,29 @@
     ref="placeImgCard"
     class="element-place"
   >
-
     <div
       v-for="item in badges"
       :key="item.id"
       :id="item.id"
       class="element-place__items"
-      @mousedown="onMouseDown"
-      :style="'left:'+item.point.x+'px;'+' top:'+item.point.y+'px;'"
+      @mousedown.prevent="onMouseDown"
+      :style="returnItemPosition(item)"
     >
-
-      <img
-        class="element-place__imgSize"
-        :src="drawImg(item.type)"
-      />
-
+      <img class="element-place__imgSize" :src="drawImg(item.type)" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-
-const mouseup = 'mouseup';
+import { valuesName } from '../config/config';
 
 export default {
   props: {
     badges: {
       type: Array,
     },
-    isLogin: {
+    isAuth: {
       type: Boolean,
     },
   },
@@ -52,9 +45,11 @@ export default {
     };
   },
   methods: {
+    returnItemPosition(item) {
+      return `left:${item.point.x}px; top:${item.point.y}px;`;
+    },
     takePlaceCoords(coordX, coordY) {
       const imgZone = this.$refs.placeImgCard;
-
       const obj = {
         left: imgZone.getBoundingClientRect().left,
         top: imgZone.getBoundingClientRect().top + window.pageYOffset,
@@ -67,15 +62,16 @@ export default {
     },
 
     onMouseDown(event) {
-      event.preventDefault();
-      if (this.isLogin === false) { return; }
+      if (this.isAuth === false) {
+        return;
+      }
 
       this.getCoords(event);
       this.limitsPlace = this.takePlaceCoords(this.shiftW, this.shiftH);
 
       this.isDrag = true;
 
-      document.addEventListener(mouseup, this.onMouseUp);
+      document.addEventListener(valuesName.mouseup, this.onMouseUp);
     },
     onMouseUp() {
       if (this.dragElement !== null) {
@@ -90,10 +86,12 @@ export default {
       }
       this.isDrag = false;
 
-      document.removeEventListener(mouseup, this.onMouseUp);
+      document.removeEventListener(valuesName.mouseup, this.onMouseUp);
     },
     onMouseMove(event) {
-      if (this.isDrag) this.move(event);
+      if (this.isDrag) {
+        this.move(event);
+      }
     },
 
     move(event) {
@@ -101,6 +99,7 @@ export default {
         x: this.limitsPlace.left,
         y: this.limitsPlace.top,
       };
+
       switch (true) {
         case event.pageX + this.shiftW > this.limitsPlace.right:
           newLocation.x = this.limitsPlace.right - this.shiftX - this.limitsPlace.left;
@@ -111,6 +110,7 @@ export default {
         default:
           newLocation.x = 0;
       }
+
       switch (true) {
         case event.pageY + this.shiftH > this.limitsPlace.bottom:
           newLocation.y = this.limitsPlace.bottom - this.shiftY - this.limitsPlace.top;
@@ -150,12 +150,15 @@ export default {
 
     drawImg(imgType) {
       switch (imgType) {
-        case 'sun':
-          return './sunHov.svg';
-        case 'cloud':
-          return './cloudHvr.svg';
+        case valuesName.sun:
+          return 'sunHover.svg';
+        case valuesName.cloud:
+          return 'cloudHover.svg';
+        case valuesName.indian:
+          return 'indHover.svg';
         default:
-          return './indHvr.svg';
+          alert('imgType error');
+          return '';
       }
     },
   },
@@ -165,19 +168,24 @@ export default {
 <style lang="scss" scoped>
 .element-place {
   position: relative;
-  width:  410px;
-  height: 500px;
   margin: 0;
+
+  width: 410px;
+  height: 500px;
 
   &__items {
     position: absolute;
+
     box-sizing: border-box;
-    width:  50px;
+
+    width: 50px;
     height: 50px;
   }
+
   &__imgSize {
-    width:  100%;
+    width: 100%;
     height: 100%;
+
     background: none;
   }
 }

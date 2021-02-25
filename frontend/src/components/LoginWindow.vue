@@ -1,79 +1,66 @@
 <template>
-  <div class="background" @keyup.enter="send">
+  <div class="background">
     <div class="background_close" @click="close"></div>
     <div class="login-window">
-
       <header class="logo login-window__header">
         <p class="logo__wrap-text">Sign In</p>
       </header>
 
-      <div class="login-form login-window__main">
+      <form class="login-form login-window__main" @submit.prevent="send">
         <input
-          class="login-form__inp-width"
-          v-model="login"
+          class="login-form__input"
+          v-model.trim="login"
           type="text"
-          placeholder="username"
-          @click="dropError"
-          required
-        >
+          placeholder="login"
+          autofocus
+        />
+
         <input
-          class="login-form__inp-width"
-          v-model="password"
+          class="login-form__input"
+          v-model.trim="password"
           type="password"
           placeholder="password"
-          @click="dropError"
-          required
-        >
+        />
 
-        <button
-          class="button-style"
-          name="form_auth_submit"
-          @click="send"
-        >SIGN IN</button>
+        <button class="button-style" type="submit">Sign in</button>
 
-        <div v-if="!isEmpty" class="invalidValue">
-          <span class="invalidValue__content">{{errorMsg}}</span>
+        <div v-if="errorMsg" class="invalid-value">
+          <span class="invalid-value__content">{{ errorMsg }}</span>
         </div>
-      </div>
+      </form>
 
-      <a class="login-window__close-btn close-btn"
-      @click="close">
-        <svg class="close-btn_color" xmlns="http://www.w3.org/2000/svg">
-        <path  d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2"/>
+      <a class="login-window__close-button close-button" @click="close">
+        <svg class="close-button_color" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L15 15M15 1L1 15" stroke="black" stroke-width="2" />
         </svg>
       </a>
-
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { spaceReg, stringArr } from '../config/config';
+import { valuesName } from '../config/config';
 
 export default {
   data() {
     return {
       login: '',
       password: '',
-
-      isLogin: false,
-      isEmpty: true,
+      isAuth: false,
 
       errorMsg: '',
     };
   },
   methods: {
     close() {
-      this.$emit(stringArr.cls, this.isLogin, this.login);
+      this.$emit('close', this.isAuth, this.login);
     },
-    send() {
-      if (!this.checkInput(this.login) || !this.checkInput(this.password)) {
-        this.dropError(false);
 
-        this.errorMsg = stringArr.errLogin;
-        return;
-      }
+    send() {
+      this.dropError();
+
+      if (this.checkInput()) { return; }
 
       axios
         .post('/api/v1/auth/sign_in', {
@@ -81,36 +68,36 @@ export default {
           password: this.password,
         })
         .then(() => {
-          localStorage.setItem(stringArr.cookie, this.login);
-          this.isLogin = true;
+          localStorage.setItem(valuesName.localStorageLoginKey, this.login);
+          this.isAuth = true;
 
           this.close();
         })
         .catch((error) => {
-          const desc = JSON.parse(error.response.request.response);
-          this.errorMsg = desc.details[0].description;
-
-          this.dropError(false);
+          this.errorMsg = error.response.statusText;
         });
     },
 
-    checkInput(element) {
-      const param = element.replace(spaceReg, '');
-      if (param === '') { return false; }
-      return true;
+    checkInput() {
+      switch (true) {
+        case this.login === '':
+          this.errorMsg = valuesName.errLogin;
+          break;
+        case this.password === '':
+          this.errorMsg = valuesName.errPassword;
+          break;
+        default:
+      }
+      return this.errorMsg;
     },
 
-    dropError(isEmpty = true) {
-      this.isEmpty = isEmpty;
-
-      this.errorMsg = isEmpty ? '' : this.errorMsg;
-    },
+    dropError() { this.errorMsg = ''; },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
 .background {
   display: flex;
@@ -118,11 +105,11 @@ export default {
   align-items: center;
 
   position: fixed;
-  z-index:  20;
+  z-index: 20;
 
-  width:  100%;
+  width: 100%;
   height: 100%;
-  top:    70px;
+  top: 70px;
 
   backdrop-filter: blur(15px);
   background-color: hsla(0, 0%, 51%, 0.452);
@@ -154,7 +141,7 @@ export default {
     flex-direction: column;
     align-items: center;
   }
-  &__close-btn {
+  &__close-button {
     position: absolute;
     right: 19px;
     top: 21px;
@@ -162,7 +149,6 @@ export default {
 }
 .logo {
   &__wrap-text {
-
     margin: 0 0 0 27px;
 
     font-style: normal;
@@ -175,12 +161,11 @@ export default {
 }
 
 .login-form {
-  &__inp-width {
-
-    font-family: 'Roboto', sans-serif;
+  &__input {
+    font-family: "Roboto", sans-serif;
     display: inline-block;
 
-    background: #FFFFFF;
+    background: #ffffff;
 
     box-sizing: border-box;
     border: 1px solid #000000;
@@ -203,7 +188,7 @@ export default {
 }
 
 // helper-classes
-.close-btn {
+.close-button {
   width: 30px;
   height: 30px;
 
@@ -214,16 +199,16 @@ export default {
 
   box-sizing: border-box;
   text-decoration: none;
-  &:hover path{
-    stroke: #4D7FFF;
+  &:hover path {
+    stroke: #4d7fff;
   }
-  &_color{
+  &_color {
     width: 100%;
     height: 100%;
   }
 }
 .button-style {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   display: inline-block;
 
   padding: 15px 80px;
@@ -232,18 +217,17 @@ export default {
   height: 51px;
 
   border: none;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   outline: none;
 
-  background-color: #000000;
-  color: white;
+  background: #000000;
+  color: #ffffff;
   font-size: 13px;
+  font-style: normal;
   font-weight: 900;
   text-decoration: none;
 }
-.invalidValue {
-
+.invalid-value {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,8 +240,7 @@ export default {
   border-radius: 6px;
 
   &__content {
-
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 13px;
@@ -267,61 +250,42 @@ export default {
     text-transform: uppercase;
   }
 }
-@media(max-width: 450px){
-  .background{
+
+@media (max-width: 650px) {
+  .background {
     align-items: flex-start;
-    background-color: #fff;
+    background-color: #ffffff;
   }
 
   .login-window {
-    position: absolute;
-
-    width: 402px;
     height: 453px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 20px;
 
     box-shadow: 0 0 0 0;
 
     &__header {
-      display: flex;
-      justify-content: start;
-
       margin: 60px 0 36px 0;
     }
-    &__main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    &__close-btn {
+    &__close-button {
       display: none;
     }
   }
+
   .button-style {
-  font-style: normal;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 24px;
-    &:hover{
-      background: #CFCFCF;
+    font-size: 24px;
+    line-height: 24px;
+
+    &:hover {
+      background: #cfcfcf;
     }
   }
-  .visible-button {
-  display: block;
-  }
-  .invalidValue {
 
+  .invalid-value {
     &__content {
-
-      font-family: 'Roboto', sans-serif;
-      font-style: normal;
-      font-weight: 900;
       font-size: 24px;
       line-height: 24px;
-
     }
   }
-
 }
 </style>
