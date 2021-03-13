@@ -5,7 +5,7 @@ module.exports = {
       '/api': {
         target: process.env.SERVER_HOST,
       },
-      '/images': {
+      '/images/': {
         target: process.env.SERVER_HOST,
       },
       '/info': {
